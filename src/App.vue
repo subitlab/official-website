@@ -1,14 +1,82 @@
 <script setup lang="ts">
 </script>
 <template>
-  <nav>
-    <RouterLink to="/"><!--TODO SubIT logo-->SubIT</RouterLink>
-    <RouterLink to="/about">关于我们</RouterLink>
-    <RouterLink to="/join">加入我们</RouterLink>
-    <RouterLink to="/achievements">项目成就</RouterLink>
-    <RouterLink to="/support">提供支持</RouterLink>
+  <nav class="nav">
+    <div class="left">
+      <RouterLink to="/">
+        <img class="logo" src="@/assets/SubIT-Normal.svg" alt="SubIT Logo"/>
+      </RouterLink>
+    </div>
+    <div class="right">
+      <RouterLink to="/about">
+        <span>关于我们</span>
+      </RouterLink>
+      <RouterLink to="/join">
+        <span>加入我们</span>
+      </RouterLink>
+      <RouterLink to="/achievements">
+        <span>项目成就</span>
+      </RouterLink>
+      <RouterLink to="/support">
+        <span>提供支持</span>
+      </RouterLink>
+    </div>
   </nav>
   <main>
     <RouterView />
   </main>
 </template>
+<style scoped lang="scss">
+$navbar-height: 60px;
+$divider-color: #E8EDF5;
+.nav {
+  display: flex;
+  justify-content: space-between;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $navbar-height;
+
+  border-bottom-color: $divider-color;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+
+  user-select: none;
+
+  div {
+    display: flex;
+    align-items: center;
+    margin: 0 40px;
+  }
+
+  .right {
+    a {
+      display: flex;
+      align-items: center;
+
+      width: 100px;
+      height: $navbar-height;
+
+      text-decoration: none;
+      color: black;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      span {
+        flex-grow: 1;
+
+        text-align: center;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.logo {
+  height: $navbar-height - 10px;
+}
+</style>
