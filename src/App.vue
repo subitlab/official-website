@@ -22,7 +22,7 @@
       </RouterLink>
     </div>
   </nav>
-  <main>
+  <main class="main">
     <RouterView />
   </main>
 </template>
@@ -38,6 +38,8 @@ $divider-color: #E8EDF5;
   left: 0;
   width: 100%;
   height: $navbar-height;
+
+  background-color: white;
 
   border-bottom-color: $divider-color;
   border-bottom-width: 2px;
@@ -78,5 +80,12 @@ $divider-color: #E8EDF5;
 
 .logo {
   height: $navbar-height - 10px;
+}
+
+.main {
+  display: flow-root;
+
+  margin-top: $navbar-height;
+  width: 100%;
 }
 </style>
