@@ -65,7 +65,7 @@ const members = [
     name: 'CPS12',
     description: 'CPSCPSCPSCPS'
   },
-]
+];
 </script>
 
 <template>
