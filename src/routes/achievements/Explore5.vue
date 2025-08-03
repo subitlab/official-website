@@ -8,13 +8,11 @@ import Content from "@/components/Content.vue";
     <span class="title">Explore 5</span>
     <span class="subtitle">由 SubIT 与 NWWC Team 共同呈现。</span>
     <a class="link" href="https://bilibili.com/" target="_blank">观看演示片 ></a>
-    <img class="image" src="@/assets/explore5.png" alt="SSubITO"/>
+    <img class="image" src="@/assets/explore5.png" alt="Explore 5"/>
   </Content>
 </template>
 
 <style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap');
-
 .center {
   text-align: center;
   background-color: black;
