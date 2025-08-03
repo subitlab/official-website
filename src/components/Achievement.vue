@@ -33,6 +33,8 @@ defineProps<{
 
   border-radius: 12px;
 
+  overflow: hidden;
+
   background-color: #F5F5F7;
 
   .achievementImage {
