@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import {useRouter} from "vue-router";
+import {computed} from "vue";
+
+const router = useRouter();
+console.log(router.currentRoute.value.path);
+const dark = computed(() => router.currentRoute.value.path == '/achievements/explore5' ? 'black' : 'white');
 </script>
 <template>
   <nav class="nav">
@@ -87,5 +93,8 @@ $divider-color: #E8EDF5;
 
   margin-top: $navbar-height;
   width: 100%;
+  min-height: calc(100vh - $navbar-height);
+
+  background-color: v-bind(dark);
 }
 </style>

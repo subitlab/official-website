@@ -8,6 +8,7 @@ import JoinView from "@/routes/JoinView.vue";
 import AchievementsView from "@/routes/AchievementsView.vue";
 import SupportView from "@/routes/SupportView.vue";
 import SSubITO from "@/routes/achievements/SSubITO.vue";
+import Explore5 from "@/routes/achievements/Explore5.vue";
 
 const routes = [
   { path: '/', component: IndexView },
@@ -15,6 +16,7 @@ const routes = [
   { path: '/join', component: JoinView },
   { path: '/achievements', component: AchievementsView },
   { path: '/achievements/ssubito', component: SSubITO },
+  { path: '/achievements/explore5', component: Explore5 },
   { path: '/support', component: SupportView }
 ];
 
