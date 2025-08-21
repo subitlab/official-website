@@ -2,6 +2,9 @@ import { createApp } from 'vue';
 import '@/style.css';
 import App from '@/App.vue';
 import {createRouter, createWebHistory} from "vue-router";
+import hljsVuePlugin from "@highlightjs/vue-plugin";
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
 import IndexView from "@/routes/IndexView.vue";
 import AboutView from "@/routes/AboutView.vue";
 import JoinView from "@/routes/JoinView.vue";
@@ -27,6 +30,9 @@ const router = createRouter({
   routes,
 });
 
+hljs.registerLanguage('javascript', javascript);
+
 const app = createApp(App);
 app.use(router);
+app.use(hljsVuePlugin);
 app.mount('#app');
