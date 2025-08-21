@@ -5,6 +5,7 @@ import {onMounted, ref} from "vue";
 import Typed from 'typed.js';
 import hljsVuePlugin from '@highlightjs/vue-plugin';
 import 'highlight.js/scss/github-dark.scss';
+import Separator from "@/components/Separator.vue";
 const highlightjs = hljsVuePlugin.component;
 const type = ref<HTMLDivElement | null>(null);
 onMounted(() => {
@@ -60,6 +61,7 @@ const code =
       </div>
     </Content>
   </div>
+  <Separator color="#161616" background-color="#ffffff"/>
 </template>
 
 <style lang="scss">
@@ -89,7 +91,7 @@ const code =
 
   .horizontalAlign {
     flex-direction: row;
-    padding: 4vw;
+    padding: 6vw 4vw 4vw;
     width: 92vw;
     @media (max-width: 1023px) {
       padding-top: 3vw;
@@ -140,10 +142,9 @@ const code =
         margin-right: auto;
         margin-top: 4em;
         text-align: left;
-        font-size: 10px;
       }
       @media (max-width: 767px) {
-        font-size: 9px;
+        font-size: 10px;
       }
     }
   }
