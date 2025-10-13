@@ -16,6 +16,11 @@ onMounted(() => {
   new Typed(type.value, {
     strings: ['这里是北大附中的 <span class="textGradient1">{技术爱好者}</span> 聚集地, <br/>让每一个爱好者都能充分 <span class="textGradient2">&lt;&#8288;施展拳脚&#8288;&gt;</span>.'],
     typeSpeed: 50,
+    fadeOut: true,
+    fadeOutDelay: 3000,
+    fadeOutClass: "",
+    startDelay: 0,
+    loop: true,
     showCursor: false
   });
 });
