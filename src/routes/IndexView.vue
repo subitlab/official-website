@@ -7,7 +7,7 @@ import hljsVuePlugin from '@highlightjs/vue-plugin';
 import 'highlight.js/scss/github-dark.scss';
 import Separator from "@/components/Separator.vue";
 import RotatingView from "@/components/RotatingView.vue";
-import Explore5 from "@/components/achievements/Explore5.vue";
+import ScreenManagement from "@/components/achievements/ScreenManagement.vue";
 import SSubITO from "@/components/achievements/SSubITO.vue";
 import YouthWrite from "@/components/achievements/YouthWrite.vue";
 const highlightjs = hljsVuePlugin.component;
@@ -158,7 +158,7 @@ const code =
     <span class="no">0x03</span>
     <span class="title">我们的项目</span>
     <div class="main">
-      <RotatingView :components="[Explore5, SSubITO, YouthWrite]"/>
+      <RotatingView :components="[ScreenManagement, SSubITO, YouthWrite]"/>
     </div>
   </div>
 </template>
@@ -211,6 +211,10 @@ const code =
 
         &.blue {
           color: #2990EB;
+        }
+
+        @media (min-width: 1440px) {
+          font-size: 100px;
         }
 
         @media (max-width: 767px) {
@@ -288,16 +292,15 @@ const code =
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: calc(100% - 12vw);
-    padding: 0 6vw 80px;
+    justify-content: center;
+    gap: 60px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
 
     .frame {
-      flex-grow: 1;
       width: 300px;
-
-      &.rightMost {
-        flex-grow: 0;
-      }
 
       .iconBox {
         width: 300px;

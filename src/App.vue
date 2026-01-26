@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Footer from "@/components/Footer.vue";
 </script>
 <template>
   <nav class="nav">
@@ -8,9 +9,6 @@
       </RouterLink>
     </div>
     <div class="right">
-      <RouterLink to="/about">
-        <span>关于我们</span>
-      </RouterLink>
       <RouterLink to="/join">
         <span>加入我们</span>
       </RouterLink>
@@ -20,11 +18,15 @@
       <RouterLink to="/support">
         <span>提供支持</span>
       </RouterLink>
+      <RouterLink to="/submore">
+        <span>SubMore</span>
+      </RouterLink>
     </div>
   </nav>
   <main class="main">
     <RouterView />
   </main>
+  <Footer />
 </template>
 <style scoped lang="scss">
 $navbar-height: 60px;

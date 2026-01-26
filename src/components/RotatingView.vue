@@ -34,7 +34,8 @@ onBeforeUnmount(() => {
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 70vw;
+  min-height: 100vh;
 }
 
 .carousel-inner {
