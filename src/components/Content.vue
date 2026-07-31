@@ -11,14 +11,15 @@
 <style scoped lang="scss">
 $padding-desktop: 6vw;
 $padding-tablet: 3vw;
-$padding-mobile: 0vw;
-$content-max-width: 1200px;
+$padding-mobile: 20px;
+$content-max-width: 960px;
 
 .content {
   display: flex;
   flex-direction: column;
 
   margin: 0 auto;
+  padding-top: 20px;
   padding-left: $padding-desktop;
   padding-right: $padding-desktop;
   max-width: $content-max-width;

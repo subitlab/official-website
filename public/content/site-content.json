@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "projects": [
+    {"title":"西楼大屏管理系统","subtitle":"这块屏幕为你所有。","linkLabel":"实时状态 >","href":"https://screen.subit.org.cn/","image":"/projects/screen.png","imageAlt":"西楼大屏管理系统"},
+    {"title":"SSubITO","subtitle":"一个应用，登录所有 SubIT 社团开发的平台。","linkLabel":"通过 SSO 登录 >","href":"https://ssubito.subit.org.cn/","image":"/projects/ssubito.png","imageAlt":"SSubITO"},
+    {"title":"创意写作工坊","subtitle":"我们把对写作的爱藏在袖子里。","linkLabel":"开始书写 >","href":"https://youthwrite.subit.org.cn/","image":"/projects/youthwrite1.png","secondaryImage":"/projects/youthwrite2.png","imageAlt":"创意写作工坊"}
+  ],
+  "achievements": [
+    {"type":"event","title":"2020毕业典礼·邀请函生成器","image":"/invitation.png","href":"https://github.com/subitlab","description":"这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"},
+    {"type":"archived","title":"2020毕业典礼·邀请函生成器","image":"/invitation.png","href":"https://github.com/subitlab","description":"这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"},
+    {"type":"running","title":"2020毕业典礼·邀请函生成器","image":"/invitation.png","href":"https://github.com/subitlab","description":"这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"},
+    {"type":"event","title":"2020毕业典礼·邀请函生成器","image":"/invitation.png","href":"https://github.com/subitlab","description":"这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"},
+    {"type":"archived","title":"2020毕业典礼·邀请函生成器","image":"/invitation.png","href":"https://github.com/subitlab","description":"这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"},
+    {"type":"running","title":"2020毕业典礼·邀请函生成器","image":"/invitation.png","href":"https://github.com/subitlab","description":"这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"}
+  ],
+  "join": {
+    "intro":"我们欢迎每一位对我们感兴趣的北大附中学生的加入！如果你希望成为我们的一员，SubIT 每年会在春季和秋季各进行一次招新，春季招新通常在每学年下半学期的 3 月至 4 月之间，秋季招新则在上半学期的 8 月至 10 月期间进行。",
+    "recruitmentLink":"https://pkuschool.yuque.com/subit",
+    "membersTitle":"27 届社员",
+    "members":[
+      {"image":"/cps.jpg","name":"社长｜CPS1","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"副社长｜CPS2","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS3","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS4","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS5","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS6","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS7","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS8","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS9","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS10","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS11","description":"CPSCPSCPSCPS"},
+      {"image":"/cps.jpg","name":"CPS12","description":"CPSCPSCPSCPS"}
+    ]
+  },
+  "submore": {
+    "intro":"在 SubIT，除了常规的社团活动，我们还有各种奇妙的社团文化 ……",
+    "pots":[
+      {"image":"/pot_mk1.png","title":"铁锅 Mk.1","subtitle":"2021届社长｜刘语辰"},
+      {"image":"/pot_mk2.png","title":"铁锅 Mk.2","subtitle":"2022届社长｜何天阳"},
+      {"image":"/pot_mk3.jpg","title":"铁锅 Mk.3","subtitle":"2023届社长｜刘宇宸"},
+      {"image":"/pot_mk1.png","title":"铁锅 Mk.4","subtitle":"2024届社长｜魏子峰"},
+      {"image":"/pot_mk1.png","title":"铁锅 Mk.5","subtitle":"2021届社长｜刘语辰"}
+    ],
+    "photos":[
+      {"image":"/submore_photo.jpg","description":"社活一角｜脆皮四绘于 2025 年夏"},
+      {"image":"/submore_photo.jpg","description":"社活一角｜脆皮四绘于 2025 年夏"},
+      {"image":"/submore_photo.jpg","description":"社活一角｜脆皮四绘于 2025 年夏"},
+      {"image":"/submore_photo.jpg","description":"社活一角｜脆皮四绘于 2025 年夏"}
+    ],
+    "wordcloud":"/wordcloud.png",
+    "quotes":[
+      {"text":"赛博旺证遗民这辈子也就这样了，鉴定为屁股决定上限","author":"YJN"},
+      {"text":"赛博旺证遗民这辈子也就这样了，鉴定为屁股决定上限","author":"YJN"},
+      {"text":"赛博旺证遗民这辈子也就这样了，鉴定为屁股决定上限","author":"YJN"},
+      {"text":"赛博旺证遗民这辈子也就这样了，鉴定为屁股决定上限","author":"YJN"},
+      {"text":"赛博旺证遗民这辈子也就这样了，鉴定为屁股决定上限","author":"YJN"},
+      {"text":"赛博旺证遗民这辈子也就这样了，鉴定为屁股决定上限","author":"YJN"}
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+ktor:
+  deployment:
+    port: 8091
+  application:
+    modules:
+      - cn.org.subit.website.ApplicationKt.module

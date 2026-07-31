@@ -28,8 +28,9 @@ defineProps<{
 .achievementContainer {
   display: flex;
   flex-direction: column;
-  width: 360px;
-  height: 360px;
+  width: 100%;
+  max-width: 301px;
+  min-height: 308px;
 
   border-radius: 12px;
 
@@ -38,10 +39,9 @@ defineProps<{
   background-color: #F5F5F7;
 
   .achievementImage {
-    width: 360px;
-    min-width: 360px;
-    height: 180px;
-    min-height: 180px;
+    width: 100%;
+    height: 156px;
+    min-height: 156px;
 
     object-fit: cover;
     object-position: center;
@@ -50,9 +50,9 @@ defineProps<{
   .achievementInfo {
     display: flex;
     flex-direction: column;
-    height: 150px;
+    min-height: 128px;
 
-    padding: 15px;
+    padding: 10px;
 
     .type {
       font-size: 0.9em;

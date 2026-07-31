@@ -1,19 +1,19 @@
 <script setup lang="ts">
 
 import Content from "@/components/Content.vue";
-import {onMounted, ref} from "vue";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 import Typed from 'typed.js';
 import hljsVuePlugin from '@highlightjs/vue-plugin';
 import 'highlight.js/scss/github-dark.scss';
 import Separator from "@/components/Separator.vue";
 import RotatingView from "@/components/RotatingView.vue";
-import ScreenManagement from "@/components/achievements/ScreenManagement.vue";
-import SSubITO from "@/components/achievements/SSubITO.vue";
-import YouthWrite from "@/components/achievements/YouthWrite.vue";
+import {useSiteContent} from "@/content/siteContent";
 const highlightjs = hljsVuePlugin.component;
+const siteContent = useSiteContent();
 const type = ref<HTMLDivElement | null>(null);
+let typed: Typed | undefined;
 onMounted(() => {
-  new Typed(type.value, {
+  typed = new Typed(type.value, {
     strings: ['这里是北大附中的 <span class="textGradient1">{技术爱好者}</span> 聚集地, <br/>让每一个爱好者都能充分 <span class="textGradient2">&lt;&#8288;施展拳脚&#8288;&gt;</span>.'],
     typeSpeed: 50,
     fadeOut: true,
@@ -24,6 +24,8 @@ onMounted(() => {
     showCursor: false
   });
 });
+
+onBeforeUnmount(() => typed?.destroy());
 
 const code =
     "class SubIT {\n" +
@@ -58,7 +60,7 @@ const code =
 </script>
 
 <template>
-  <div class="block blockTitle">
+  <div id="about" class="block blockTitle">
     <Content class="horizontalAlign">
       <div class="titleLeft">
         <h1>我们是</h1>
@@ -84,7 +86,7 @@ const code =
       <span class="note">摄于 xxxx 年春</span>
     </div>
   </div>
-  <div class="block block1">
+  <div id="responsibilities" class="block block1">
     <span class="no">0x01</span>
     <span class="title">我们的职责</span>
     <div class="main">
@@ -121,7 +123,7 @@ const code =
     </div>
   </div>
   <Separator color="#F7F9FC" background-color="#000000"/>
-  <div class="block block2">
+  <div id="groups" class="block block2">
     <span class="no">0x02</span>
     <div class="segment">
       <div class="left">
@@ -154,11 +156,11 @@ const code =
       </div>
     </div>
   </div>
-  <div class="block block3">
+  <div id="projects" class="block block3">
     <span class="no">0x03</span>
     <span class="title">我们的项目</span>
     <div class="main">
-      <RotatingView :components="[ScreenManagement, SSubITO, YouthWrite]"/>
+      <RotatingView :items="siteContent.projects"/>
     </div>
   </div>
 </template>
@@ -179,270 +181,307 @@ const code =
 </style>
 
 <style scoped lang="scss">
+.block {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+
+  .no {
+    position: absolute;
+    z-index: -1;
+    top: clamp(32px, 3vw, 48px);
+    left: 0;
+    margin: 10px;
+    color: rgba(156, 163, 175, .3);
+    font: 400 100px/1 "JetBrains Mono", monospace;
+  }
+}
+
 .blockTitle {
-  min-height: 100vh;
-  background-color: #161616;
+  min-height: 600px;
+  height: clamp(600px, calc(100svh - 65px), 657px);
+  background: #161616;
   color: white;
 
   .horizontalAlign {
+    box-sizing: border-box;
+    align-items: center;
     flex-direction: row;
-    padding: 6vw 4vw 4vw;
-    width: 92vw;
-    @media (max-width: 1023px) {
-      padding-top: 3vw;
-      flex-direction: column;
-      text-align: center;
+    gap: clamp(28px, 3vw, 45px);
+    width: 100%;
+    max-width: 1488px;
+    min-height: inherit;
+    padding: 33px clamp(24px, 6.45vw, 96px);
+  }
+
+  .titleLeft {
+    width: min(44vw, 640px);
+    max-width: 640px;
+    margin: 0;
+    word-break: keep-all;
+
+    h1 {
+      margin: 0;
+      font: 700 clamp(64px, 6vw, 90px)/1.12 "JetBrains Mono", monospace;
+
+      &.blue { color: #2990eb; font-size: clamp(82px, 8vw, 120px); }
     }
-    .titleLeft {
-      display: block;
-      max-width: 44vw;
-      word-break: keep-all;
-      margin-left: 0;
-      margin-right: 2vw;
-      @media (max-width: 1023px) {
-        max-width: 100%;
-      }
-      h1 {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 80px;
-        font-weight: 700;
-        line-height: 1.5em;
-        margin: 0;
 
-        &.blue {
-          color: #2990EB;
-        }
-
-        @media (min-width: 1440px) {
-          font-size: 100px;
-        }
-
-        @media (max-width: 767px) {
-          font-size: 50px;
-        }
-      }
-      .subtitle {
-        margin-top: 100px;
-
-        font-size: 30px;
-        font-weight: 600;
-        line-height: 1.5em;
-
-        @media (max-width: 767px) {
-          font-size: 20px;
-        }
-      }
+    .subtitle {
+      min-height: 120px;
+      margin-top: clamp(70px, 9vw, 135px);
+      font-size: clamp(24px, 2.22vw, 33px);
+      font-weight: 600;
+      line-height: 1.82;
     }
-    .titleRight {
-      margin-left: auto;
-      font-size: 12px;
-      @media (max-width: 1023px) {
-        align-self: center;
-        margin-right: auto;
-        margin-top: 4em;
-        text-align: left;
-      }
-      @media (max-width: 767px) {
-        font-size: 10px;
-      }
+  }
+
+  .titleRight {
+    box-sizing: border-box;
+    flex: 0 1 611px;
+    width: min(42vw, 611px);
+    height: min(39.72vw, 591px);
+    min-height: 500px;
+    max-width: 100%;
+    margin-left: auto;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #000;
+    font-size: 14px;
+
+    :deep(pre) {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 24px;
+      overflow: hidden;
+      border-radius: 16px;
+      font-size: inherit;
+      line-height: 20px;
     }
   }
 }
+
 .block0 {
-  flex-direction: row;
+  box-sizing: border-box;
+  justify-content: center;
+  gap: clamp(40px, 11vw, 164px);
+  min-height: 776px;
+  padding: 0 clamp(24px, 5vw, 74px);
+
   .left {
     display: flex;
     flex-direction: column;
-    padding: 80px 6vw;
-    .title {
-      font-size: 40px;
-      font-weight: 700;
-    }
-    .content {
-      font-size: 20px;
-      margin-bottom: 2em;
-    }
+    width: min(40vw, 554px);
+    padding: 145px 0 40px;
+
+    .title { font-size: clamp(36px, 3.36vw, 50px); font-weight: 700; line-height: 1.3; }
+    .content { margin: 22px 0 36px; font-size: clamp(18px, 2.01vw, 30px); line-height: 1.12; }
   }
+
   .right {
     display: flex;
     flex-direction: column;
-    padding: 80px 4vw;
-    .photo {
-      width: 40vw;
-    }
-    .note {
-      color: #848D97;
-      text-align: center;
-      font-size: 20px;
-    }
+    width: min(38vw, 535px);
+    padding: 200px 0 40px;
+
+    .photo { width: 100%; border-radius: 8px; box-shadow: 2px 2px 4px 1px rgba(0,0,0,.25); }
+    .note { color: #848d97; text-align: center; font-size: clamp(18px, 2.01vw, 30px); }
   }
 }
+
 .block1 {
-  background: #F7F9FC;
-
+  min-height: 677px;
+  margin-top: -23px;
   flex-direction: column;
+  background: #f7f9fc;
 
-  .title {
-    font-size: 60px;
+  > .title {
+    width: min(calc(100% - 48px), 1206px);
+    margin: 82px auto 41px;
+    font-size: clamp(38px, 3.23vw, 48px);
     font-weight: 700;
-    margin: 80px 6vw;
+    line-height: 59px;
   }
 
   .main {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 60px;
-    width: 100%;
-    max-width: 1200px;
+    gap: 70px;
+    width: min(calc(100% - 48px), 1034px);
     margin: 0 auto;
-    padding: 0 20px 80px;
+    padding: 0 0 39px;
 
     .frame {
-      width: 300px;
+      width: 298px;
 
       .iconBox {
-        width: 300px;
-        height: 300px;
-        background-color: #D7EBFF;
-
         display: flex;
-        flex-direction: column;
+        align-items: center;
         justify-content: center;
+        width: 298px;
+        height: 298px;
+        background: #d7ebff;
 
-        img {
-          height: 150px;
+        > img {
+          width: auto;
+          height: auto;
+          max-width: 58%;
+          max-height: 47%;
+          object-fit: contain;
         }
       }
 
       .description {
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        width: 240px;
-        height: 120px;
-        padding: 30px;
-        background-color: white;
+        width: 298px;
+        height: 158px;
+        padding: 10px 20px;
+        background: white;
 
-        .descNote {
-          font-size: 12px;
-          color: #42425A;
-        }
-        .descTitle {
-          font-size: 30px;
-          font-weight: 700;
-          margin-bottom: 15px;
-        }
-        .descInfo {
-          font-size: 15px;
-        }
+        .descNote { color: #42425a; font-size: 14px; }
+        .descTitle { margin-bottom: 15px; font-size: 28px; font-weight: 700; }
+        .descInfo { font-size: 16px; line-height: 1.92; }
       }
     }
   }
 }
+
 .block2 {
-  background-color: #000000;
+  min-height: 936px;
+  flex-direction: column;
+  background: #000;
   color: white;
 
-  flex-direction: column;
   .segment {
     display: flex;
-    flex-direction: row;
-    .left {
-      display: flex;
-      flex-direction: column;
-      padding: 80px 5vw;
-      .title {
-        font-size: 60px;
-        font-weight: 700;
-      }
-      .content {
-        font-size: 20px;
-        margin-bottom: 2em;
-      }
-      .photo {
-        width: 40vw;
-      }
-      .note {
-        color: #848D97;
-        text-align: center;
-        font-size: 20px;
-      }
-    }
-    .right {
-      display: flex;
-      flex-direction: column;
-      padding: 80px 5vw;
-      &.flexRow {
-        flex-direction: row;
-        gap: 40px;
-        padding-top: 160px;
-      }
-      .card {
-        align-content: center;
-        min-width: 180px;
-        min-height: 30px;
-        padding: 20px;
-        border-radius: 20px;
-        border: 2px solid rgba(1, 113, 212, 0.20);
-        background: white;
-        color: #4B5563;
 
-        .title {
-          font-size: 18px;
-          font-weight: 700;
-          color: black;
-        }
-        .bold {
-          font-weight: 700;
-        }
-      }
-      .photo {
-        width: 40vw;
-      }
-      .note {
-        color: #848D97;
-        text-align: center;
-        font-size: 20px;
-      }
+    .left, .right { display: flex; flex-direction: column; padding: 0; }
+    .left .title { font-size: 48px; font-weight: 700; }
+    .left .content { margin-top: 20px; font-size: 22px; line-height: 33px; }
+    .photo { width: 100%; border-radius: 8px; }
+    .note { color: #9ea6ad; text-align: center; font-size: 30px; }
+
+    .right.flexRow { flex-direction: row; gap: 24px; padding-top: 25px; }
+    .card {
+      box-sizing: border-box;
+      width: 248px;
+      min-width: 0;
+      height: 160px;
+      padding: 24px;
+      border: 2px solid rgba(1, 113, 212, .2);
+      border-radius: 8px;
+      background: white;
+      color: #4b5563;
+
+      .title { color: #0a0f1a; font-size: 20px; font-weight: 700; }
+      .bold { font-weight: 700; }
     }
   }
+
+  .segment:first-of-type {
+    box-sizing: border-box;
+    gap: 81px;
+    width: min(calc(100% - 48px), 1152px);
+    min-height: 400px;
+    margin: 0 auto;
+    padding-top: 118px;
+
+    > .left, > .right { width: 520px; }
+  }
+
+  .segment:last-of-type {
+    gap: 117px;
+    width: min(calc(100% - 48px), 1121px);
+    margin: 0 auto;
+
+    > .left, > .right { width: 502px; }
+  }
 }
+
 .block3 {
+  min-height: 836px;
   flex-direction: column;
 
-  .title {
-    font-size: 60px;
+  > .title {
+    width: min(calc(100% - 48px), 1152px);
+    margin: 82px auto 14px;
+    font-size: clamp(38px, 3.23vw, 48px);
     font-weight: 700;
-    margin: 80px 6vw;
+    line-height: 59px;
   }
 
-  .main {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 0 0 80px;
+  .main { display: flex; width: 100%; padding: 0; }
+}
+
+@media (max-width: 1023px) {
+  .blockTitle {
+    .horizontalAlign { justify-content: center; flex-direction: column; padding: 54px 24px; text-align: center; }
+    .titleLeft { width: 100%; max-width: 100%; }
+    .titleLeft .subtitle { margin-top: 70px; }
+    .titleRight {
+      align-self: center;
+      width: 100%;
+      max-width: calc(100vw - 32px);
+      height: auto;
+      min-height: 0;
+      margin: 32px auto 0;
+      overflow-x: auto;
+      text-align: left;
+
+      :deep(pre) { min-width: 405px; height: auto; }
+    }
   }
 }
-.block {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
 
-  display: flex;
-  z-index: 0;
+@media (max-width: 850px) {
+  .block .no { font-size: 70px; }
+  .block0 {
+    min-height: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
 
-  .no {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    margin: 10px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 100px;
-    font-weight: 400;
-    color: #9CA3AF4D;
+    .left { box-sizing: border-box; width: 100%; padding: 100px 24px 10px; }
+    .right { box-sizing: border-box; width: 100%; padding: 30px 24px 64px; }
   }
+  .block1 {
+    > .title { margin: 64px 24px 36px; font-size: 42px; }
+    .main { box-sizing: border-box; gap: 28px; padding: 0 20px 64px; }
+    .main .frame { width: 100%; max-width: 298px; }
+    .main .frame .iconBox, .main .frame .description { width: 100%; }
+  }
+  .block2 .segment, .block2 .segment:first-of-type, .block2 .segment:last-of-type {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+
+    > .left, > .right { box-sizing: border-box; width: 100%; padding: 60px 24px 12px; }
+    .left .title { font-size: 42px; }
+    .right.flexRow { flex-direction: column; gap: 18px; padding: 20px 24px 50px; }
+    .card { width: 100%; }
+  }
+  .block3 > .title { width: auto; margin: 64px 24px 24px; font-size: 42px; }
+}
+
+@media (min-width: 851px) and (max-width: 1120px) {
+  .block1 .main { gap: 24px; }
+  .block1 .main .frame { width: min(29vw, 298px); }
+  .block1 .main .frame .iconBox, .block1 .main .frame .description { width: 100%; }
+  .block2 .segment:first-of-type { gap: 40px; }
+  .block2 .segment:last-of-type { gap: 48px; }
+}
+
+@media (max-height: 560px) and (min-width: 1024px) {
+  .blockTitle { min-height: 600px; }
 }
 </style>

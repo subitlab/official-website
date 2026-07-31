@@ -3,69 +3,9 @@
 import Content from "@/components/Content.vue";
 import Link from "@/components/Link.vue";
 import Member from "@/components/Member.vue";
+import {useSiteContent} from "@/content/siteContent";
 
-const members = [
-  {
-    image: '/cps.jpg',
-    name: '社长 | CPS1',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: '副社长 | CPS2',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS3',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS4',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS5',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS6',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS7',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS8',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS9',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS10',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS11',
-    description: 'CPSCPSCPSCPS'
-  },
-  {
-    image: '/cps.jpg',
-    name: 'CPS12',
-    description: 'CPSCPSCPSCPS'
-  },
-];
+const siteContent = useSiteContent();
 </script>
 
 <template>
@@ -73,7 +13,7 @@ const members = [
     <div class="header">
       <h1>加入 SubIT</h1>
       <p class="intro">
-        我们欢迎每一位对我们感兴趣的北大附中学生的加入！如果你希望成为我们的一员，SubIT 每年会在春季和秋季各进行一次招新，春季招新通常在每学年下半学期的 3 月至 4 月之间，秋季招新则在上半学期的 8 月至 10 月期间进行。
+        {{ siteContent.join.intro }}
       </p>
     </div>
 
@@ -81,7 +21,7 @@ const members = [
       <div class="col">
         <h2>参考资源</h2>
         <div class="links">
-          <Link href="https://www.yuque.com/"
+          <Link :href="siteContent.join.recruitmentLink"
                 title="语雀招新中转站"
                 description="阅读招新要求 >"/>
           <Link href="https://subit.org.cn/"
@@ -112,10 +52,10 @@ const members = [
       </div>
     </div>
 
-    <h2 class="section-title">27 届社员</h2>
+    <h2 class="section-title">{{ siteContent.join.membersTitle }}</h2>
 
     <div class="membersContainer">
-      <Member v-for="(member, index) in members"
+      <Member v-for="(member, index) in siteContent.join.members"
               :key="index"
               :image="member.image"
               :name="member.name"
@@ -126,24 +66,25 @@ const members = [
 
 <style scoped lang="scss">
 .header {
-  margin-bottom: 60px;
+  margin-bottom: 28px;
   h1 {
-    font-size: 48px;
-    margin-bottom: 30px;
+    font-size: 32px;
+    margin: 0 0 10px;
   }
   .intro {
-    font-size: 18px;
-    line-height: 1.6;
-    max-width: 800px;
-    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 960px;
+    color: #0d141c;
   }
 }
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  margin-bottom: 80px;
+  grid-template-columns: 201px 196px minmax(300px, 1fr);
+  justify-content: space-between;
+  gap: 75px;
+  margin-bottom: 18px;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
@@ -152,8 +93,8 @@ const members = [
 
   .col {
     h2 {
-      font-size: 24px;
-      margin-bottom: 30px;
+      font-size: 22px;
+      margin-bottom: 14px;
       color: #000;
     }
   }
@@ -162,7 +103,7 @@ const members = [
 .stats {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 12px;
 
   .stat-item {
     display: flex;
@@ -170,12 +111,12 @@ const members = [
     gap: 10px;
     
     .label {
-      font-size: 24px;
+      font-size: 22px;
       color: #333;
     }
     
     .value {
-      font-size: 40px;
+      font-size: 32px;
       font-weight: 700;
       &.blue {
         color: #007AFF;
@@ -193,14 +134,21 @@ const members = [
 }
 
 .section-title {
-  font-size: 32px;
-  margin-bottom: 40px;
+  font-size: 22px;
+  margin: 12px 0 12px;
 }
 
 .membersContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 40px 20px;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px 30px;
   justify-items: start;
+  padding-bottom: 36px;
+
+}
+
+@media (max-width: 1024px) {
+  .info-grid { grid-template-columns: 1fr; gap: 28px; }
+  .logos-img { max-width: 460px; }
 }
 </style>

@@ -3,66 +3,32 @@
 import Content from "@/components/Content.vue";
 import Achievement from "@/components/Achievement.vue";
 import LinkButton from "@/components/LinkButton.vue";
+import {computed} from "vue";
+import {useRoute} from "vue-router";
+import {useSiteContent} from "@/content/siteContent";
 
-const achievements = [
-  {
-    type: "event",
-    title: "2020毕业典礼·邀请函生成器",
-    image: "/invitation.png",
-    href: "https://github.com/",
-    description: "这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"
-  },
-  {
-    type: "archived",
-    title: "2020毕业典礼·邀请函生成器",
-    image: "/invitation.png",
-    href: "https://github.com/",
-    description: "这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"
-  },
-  {
-    type: "running",
-    title: "2020毕业典礼·邀请函生成器",
-    image: "/invitation.png",
-    href: "https://github.com/",
-    description: "这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"
-  },
-  {
-    type: "event",
-    title: "2020毕业典礼·邀请函生成器",
-    image: "/invitation.png",
-    href: "https://github.com/",
-    description: "这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"
-  },
-  {
-    type: "archived",
-    title: "2020毕业典礼·邀请函生成器",
-    image: "/invitation.png",
-    href: "https://github.com/",
-    description: "这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"
-  },
-  {
-    type: "running",
-    title: "2020毕业典礼·邀请函生成器",
-    image: "/invitation.png",
-    href: "https://github.com/",
-    description: "这是一段描述这是一段描述这是一段描述这是一段描述这是一段描述"
-  },
-];
+const route = useRoute();
+const isAll = computed(() => route.path.endsWith('/all'));
+const siteContent = useSiteContent();
 </script>
 
 <template>
   <Content>
-    <h1>项目与成就</h1>
+    <h1>{{ isAll ? '所有项目与成就' : '项目与成就' }}</h1>
     <div class="achievementsContainer">
-      <Achievement v-for="achievement in achievements"
+      <Achievement v-for="(achievement, index) in siteContent.achievements"
+                   :key="index"
                    :image="achievement.image"
                    :title="achievement.title"
                    :description="achievement.description"
                    :href="achievement.href"
                    :type="achievement.type"/>
     </div>
-    <RouterLink class="checkAll" to="/achievement/all">
+    <RouterLink v-if="!isAll" class="checkAll" to="/achievements/all">
       <LinkButton type="normal">查看所有成就 >></LinkButton>
+    </RouterLink>
+    <RouterLink v-else class="checkAll" to="/achievements">
+      <LinkButton type="normal">返回项目概览</LinkButton>
     </RouterLink>
   </Content>
 </template>
@@ -70,10 +36,12 @@ const achievements = [
 <style scoped lang="scss">
 .achievementsContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px 12px;
   justify-items: center;
 }
+
+h1 { margin: 16px 0 28px; font-size: 32px; }
 
 .checkAll {
   margin-top: 30px;

@@ -40,7 +40,8 @@
   color: white;
   display: flex;
   justify-content: center;
-  padding: 60px 0 40px;
+  box-sizing: border-box;
+  padding: 56px 0 36px;
 }
 
 .content {
@@ -136,5 +137,9 @@
 .bottom {
   font-size: 14px;
   color: #E8EDF5;
+}
+
+@media (max-width: 768px) {
+  .footer { padding: 48px 0 32px; }
 }
 </style>

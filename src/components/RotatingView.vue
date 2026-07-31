@@ -1,32 +1,58 @@
 <script setup lang="ts">
-import {ref, onMounted, onBeforeUnmount, type Component} from "vue"
+import {ref, onMounted, onBeforeUnmount} from "vue"
+import ProjectShowcase from "@/components/ProjectShowcase.vue";
+import type {ProjectItem} from "@/content/siteContent";
 
-const { components } = defineProps<{
-  components: Component[]
+const props = defineProps<{
+  items: readonly ProjectItem[]
 }>();
 const currentIndex = ref(0)
-let timer!: number;
+const paused = ref(false);
+let timer: ReturnType<typeof setInterval> | undefined;
+
+function select(index: number) {
+  currentIndex.value = (index + props.items.length) % props.items.length;
+  restart();
+}
+
+function restart() {
+  if (timer) clearInterval(timer);
+  timer = setInterval(() => {
+    if (!paused.value) currentIndex.value = (currentIndex.value + 1) % props.items.length;
+  }, 5000);
+}
 
 onMounted(() => {
-  timer = setInterval(() => {
-    currentIndex.value = (currentIndex.value + 1) % components.length
-  }, 5000);
+  restart();
 });
 
 onBeforeUnmount(() => {
-  clearInterval(timer);
+  if (timer) clearInterval(timer);
 });
 </script>
 
 <template>
-  <div class="carousel-container">
+  <div class="carousel-container" @mouseenter="paused = true" @mouseleave="paused = false" @focusin="paused = true" @focusout="paused = false">
     <transition-group name="slide" tag="div" class="carousel-inner">
-      <component
-          :is="components[currentIndex]"
+      <ProjectShowcase
+          :item="props.items[currentIndex]"
           :key="currentIndex"
           class="carousel-item"
       />
     </transition-group>
+    <button class="arrow previous" type="button" aria-label="上一个项目" @click="select(currentIndex - 1)">‹</button>
+    <button class="arrow next" type="button" aria-label="下一个项目" @click="select(currentIndex + 1)">›</button>
+    <div class="dots" aria-label="选择项目">
+      <button
+        v-for="(item, index) in props.items"
+        :key="index"
+        type="button"
+        :class="{ active: index === currentIndex }"
+        :aria-label="`查看${item.title}`"
+        :aria-current="index === currentIndex ? 'true' : undefined"
+        @click="select(index)"
+      />
+    </div>
   </div>
 </template>
 
@@ -34,8 +60,9 @@ onBeforeUnmount(() => {
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 70vw;
-  min-height: 100vh;
+  height: 662px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .carousel-inner {
@@ -73,5 +100,56 @@ onBeforeUnmount(() => {
 .slide-leave-to {
   transform: translateX(-100%);
   opacity: 0;
+}
+
+.arrow {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(13, 20, 28, .12);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .9);
+  color: #0d141c;
+  box-shadow: 0 4px 18px rgba(13, 20, 28, .12);
+  cursor: pointer;
+  font-size: 32px;
+  line-height: 1;
+
+  &.previous { left: 24px; }
+  &.next { right: 24px; }
+}
+
+.dots {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 24px;
+  display: flex;
+  gap: 9px;
+  transform: translateX(-50%);
+
+  button {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: #a9b2bc;
+    cursor: pointer;
+    transition: width .2s ease, background .2s ease;
+
+    &.active { width: 28px; background: #0066cc; }
+  }
+}
+
+@media (max-width: 700px) {
+  .carousel-container { height: 540px; min-height: 540px; }
+  .arrow { width: 38px; height: 38px; top: 56%; }
+  .arrow.previous { left: 10px; }
+  .arrow.next { right: 10px; }
 }
 </style>

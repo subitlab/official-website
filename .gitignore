@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+content-service/.gradle/
+content-service/build/
+content-service/data/
 
 # Editor directories and files
 .vscode/*

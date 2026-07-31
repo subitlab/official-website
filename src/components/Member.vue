@@ -22,9 +22,11 @@ defineProps<{
   flex-direction: column;
 
   img {
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
     border-radius: 5px;
+    object-fit: cover;
+
   }
 
   .memberInfo {
@@ -32,9 +34,10 @@ defineProps<{
     flex-direction: column;
 
     margin: 10px 0;
+    font-size: 14px;
 
     .comment {
-      max-width: 120px;
+      max-width: 130px;
       word-break: break-all;
     }
   }

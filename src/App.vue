@@ -1,14 +1,31 @@
 <script setup lang="ts">
 import Footer from "@/components/Footer.vue";
+import SearchDialog from "@/components/SearchDialog.vue";
+import {onMounted, ref, watch} from "vue";
+import {useRoute} from "vue-router";
+import {loadSiteContent} from "@/content/siteContent";
+
+const searchOpen = ref(false);
+const mobileOpen = ref(false);
+const route = useRoute();
+
+onMounted(loadSiteContent);
+
+watch(() => route.fullPath, () => {
+  mobileOpen.value = false;
+});
 </script>
 <template>
   <nav class="nav">
     <div class="left">
-      <RouterLink to="/">
+      <RouterLink to="/" aria-label="返回首页">
         <img class="logo" src="@/assets/SubIT-Normal.svg" alt="SubIT Logo"/>
       </RouterLink>
     </div>
-    <div class="right">
+    <button class="menuButton" type="button" :aria-expanded="mobileOpen" aria-label="打开导航菜单" @click="mobileOpen = !mobileOpen">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="right" :class="{ open: mobileOpen }">
       <RouterLink to="/join">
         <span>加入我们</span>
       </RouterLink>
@@ -21,15 +38,19 @@ import Footer from "@/components/Footer.vue";
       <RouterLink to="/submore">
         <span>SubMore</span>
       </RouterLink>
+      <button class="searchButton" type="button" aria-label="搜索" @click="searchOpen = true">
+        <img src="@/assets/search.svg" alt=""/>
+      </button>
     </div>
   </nav>
   <main class="main">
     <RouterView />
   </main>
   <Footer />
+  <SearchDialog :open="searchOpen" @close="searchOpen = false"/>
 </template>
 <style scoped lang="scss">
-$navbar-height: 60px;
+$navbar-height: 65px;
 $divider-color: #E8EDF5;
 .nav {
   display: flex;
@@ -45,31 +66,37 @@ $divider-color: #E8EDF5;
   background-color: white;
 
   border-bottom-color: $divider-color;
-  border-bottom-width: 2px;
+  border-bottom-width: 1px;
   border-bottom-style: solid;
 
   user-select: none;
 
-  div {
+  > div {
     display: flex;
     align-items: center;
-    margin: 0 40px;
   }
 
+  .left { margin-left: 40px; }
+
   .right {
+    margin-right: 30px;
+    gap: 4px;
+
     a {
       display: flex;
       align-items: center;
 
-      width: 100px;
+      width: 88px;
       height: $navbar-height;
 
       text-decoration: none;
       color: black;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.055);
       }
+
+      &.router-link-active span { color: #0066cc; }
 
       span {
         flex-grow: 1;
@@ -82,8 +109,29 @@ $divider-color: #E8EDF5;
 }
 
 .logo {
-  height: $navbar-height - 10px;
+  width: 78px;
+  height: 39px;
 }
+
+.searchButton, .menuButton {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.searchButton {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-left: 8px;
+  border-radius: 8px;
+
+  &:hover { background: rgba(0, 0, 0, .055); }
+  img { width: 20px; height: 20px; }
+}
+
+.menuButton { display: none; }
 
 .main {
   display: flow-root;
@@ -91,5 +139,49 @@ $divider-color: #E8EDF5;
   margin-top: $navbar-height;
   width: 100%;
   min-height: calc(100vh - $navbar-height);
+}
+
+@media (max-width: 760px) {
+  .nav {
+    .left { margin-left: 18px; }
+
+    .right {
+      position: absolute;
+      top: $navbar-height;
+      left: 0;
+      right: 0;
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      margin: 0;
+      padding: 10px 14px 16px;
+      border-bottom: 1px solid $divider-color;
+      background: white;
+      box-shadow: 0 12px 24px rgba(13, 20, 28, .08);
+
+      &.open { display: flex; }
+
+      a {
+        width: 100%;
+        height: 48px;
+        border-radius: 8px;
+        span { padding-left: 14px; text-align: left; }
+      }
+    }
+  }
+
+  .menuButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 48px;
+    margin-right: 10px;
+
+    span { width: 22px; height: 2px; margin: 0 auto; background: #0d141c; }
+  }
+
+  .searchButton { width: 100%; height: 44px; margin: 4px 0 0; justify-content: start; padding-left: 14px; }
 }
 </style>

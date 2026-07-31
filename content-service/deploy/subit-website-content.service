@@ -1,0 +1,22 @@
+[Unit]
+Description=SubIT Website Content Service
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=subit-website
+Group=www-data
+WorkingDirectory=/opt/subit-website-content
+EnvironmentFile=/etc/subit/website-content.env
+ExecStart=/usr/bin/java -jar /opt/subit-website-content/SubITWebsiteContentService.jar
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/subit-website-content
+
+[Install]
+WantedBy=multi-user.target

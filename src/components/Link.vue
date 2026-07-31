@@ -1,17 +1,13 @@
 <script setup lang="ts">
-const { href } = defineProps<{
+defineProps<{
   href: string,
   title: string,
   description: string
 }>();
-
-function openInNewTab() {
-  window.open(href, '_blank');
-}
 </script>
 
 <template>
-  <div class="linkContainer" @click="openInNewTab">
+  <a class="linkContainer" :href="href" target="_blank" rel="noreferrer">
     <div class="linkBox">
       <img src="@/assets/link.svg" alt="链接"/>
     </div>
@@ -19,37 +15,37 @@ function openInNewTab() {
       <strong>{{ title }}</strong>
       <span class="comment">{{ description }}</span>
     </div>
-  </div>
+  </a>
 </template>
 
 <style scoped lang="scss">
-$link-box-size: 3rem;
-
 .linkContainer {
   display: flex;
-  gap: $link-box-size / 2;
+  gap: 1.5rem;
 
-  height: $link-box-size;
-  margin: $link-box-size / 3 0;
+  height: 3rem;
+  margin: 1rem 0;
 
-  font-size: $link-box-size / 3;
+  font-size: 1rem;
 
   cursor: pointer;
+  color: #0d141c;
+  text-decoration: none;
 
   .linkBox {
     display: flex;
 
-    width: $link-box-size / 3;
-    height: $link-box-size / 3;
+    width: 1rem;
+    height: 1rem;
 
-    padding: $link-box-size / 3;
+    padding: 1rem;
 
     background-color: #E8EDF5;
-    border-radius: $link-box-size / 6;
+    border-radius: .5rem;
 
     img {
-      width: $link-box-size / 3;
-      height: $link-box-size / 3;
+      width: 1rem;
+      height: 1rem;
     }
   }
 

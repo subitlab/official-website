@@ -10,6 +10,19 @@ export default defineConfig({
     },
   },
   plugins: [vue()],
+  server: {
+    proxy: {
+      "/content": {
+        target: "http://127.0.0.1:8091",
+        changeOrigin: true,
+      },
+      "/content-api": {
+        target: "http://127.0.0.1:8091",
+        changeOrigin: true,
+        rewrite: requestPath => requestPath.replace(/^\/content-api/, ""),
+      },
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {

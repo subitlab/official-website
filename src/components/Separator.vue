@@ -13,11 +13,16 @@ defineProps<{color: string, backgroundColor: string}>();
 
 <style scoped lang="scss">
 .separatorGroup {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 5vw;
+  height: 101px;
+  margin-top: -41px;
+  margin-bottom: -73px;
   background-color: v-bind(backgroundColor);
+  pointer-events: none;
 
   .separator {
     background-color: v-bind(color);
