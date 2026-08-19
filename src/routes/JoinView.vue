@@ -52,9 +52,9 @@ const siteContent = useSiteContent();
       </div>
     </div>
 
-    <h2 class="section-title">{{ siteContent.join.membersTitle }}</h2>
+    <h2 v-if="false" class="section-title">{{ siteContent.join.membersTitle }}</h2>
 
-    <div class="membersContainer">
+    <div v-if="false" class="membersContainer">
       <Member v-for="(member, index) in siteContent.join.members"
               :key="index"
               :image="member.image"
