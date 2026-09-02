@@ -16,13 +16,13 @@ class SsoClient(private val config: AppConfig, private val client: HttpClient) {
         check(tokenResponse.status.isSuccess()) {
             "SSubitO rejected the authorization code (${tokenResponse.status.value})"
         }
-        val tokens = tokenResponse.body<SsoTokenResponse>()
+        val tokens = tokenResponse.body<SsoApiResponse<SsoTokenResponse>>().data
         val infoResponse = client.get("${config.ssoApiUrl}/serviceApi/info") {
             header(HttpHeaders.Authorization, "Bearer ${tokens.accessToken}")
         }
         check(infoResponse.status.isSuccess()) {
             "SSubitO user lookup failed (${infoResponse.status.value})"
         }
-        return infoResponse.body<SsoInfoResponse>().user
+        return infoResponse.body<SsoApiResponse<SsoInfoResponse>>().data.user
     }
 }

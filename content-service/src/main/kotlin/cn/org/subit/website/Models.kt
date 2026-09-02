@@ -49,6 +49,14 @@ data class SsoTokenResponse(
 )
 
 @Serializable
+data class SsoApiResponse<T>(
+    val code: Int,
+    val subStatus: Int,
+    val message: String,
+    val data: T,
+)
+
+@Serializable
 data class SsoBasicUser(val id: Int, val username: String? = null, val email: List<String> = emptyList())
 
 @Serializable

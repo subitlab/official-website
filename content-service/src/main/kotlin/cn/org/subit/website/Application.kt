@@ -174,6 +174,13 @@ fun Application.module(config: AppConfig = AppConfig.fromEnvironment()) {
                     call.requireRole(database, CmsRole.EDITOR)
                     call.respond(database.releases())
                 }
+                get("/releases/{id}") {
+                    call.requireRole(database, CmsRole.EDITOR)
+                    val id = releaseId(call.parameters["id"])
+                    val content = database.getReleaseContent(id)
+                        ?: return@get call.respond(HttpStatusCode.NotFound, ApiError("版本不存在"))
+                    call.respond(content)
+                }
                 post("/releases/{id}/rollback") {
                     val principal = call.requireRole(database, CmsRole.EDITOR, csrf = true)
                     val sourceId = releaseId(call.parameters["id"])

@@ -63,6 +63,7 @@ export const saveDraft = (content: SiteContent, csrf: string) =>
 export const publishContent = (content: SiteContent, csrf: string, publishAt?: string) =>
   request<PublishResponse>("/content/publish", jsonRequest("POST", csrf, {content, publishAt}));
 export const listReleases = () => request<ReleaseInfo[]>("/content/releases");
+export const loadReleaseContent = (id: string) => request<SiteContent>(`/content/releases/${encodeURIComponent(id)}`);
 export const rollbackRelease = (id: string, csrf: string) =>
   request<PublishResponse>(`/content/releases/${id}/rollback`, jsonRequest("POST", csrf));
 export const cancelRelease = (id: string, csrf: string) =>

@@ -21,6 +21,7 @@ import {
   getMe,
   listReleases,
   listUsers,
+  loadReleaseContent,
   loadDraft,
   loginUrl,
   logout,
@@ -40,11 +41,13 @@ const me = ref<CmsMe | null>(null);
 const loading = ref(true);
 const serviceError = ref("");
 const releases = ref<ReleaseInfo[]>([]);
+const releaseContents = ref<Record<string, SiteContent>>({});
 const users = ref<CmsUser[]>([]);
 const publishAt = ref("");
 const newUserId = ref<number | null>(null);
 const newUserRole = ref<CmsRole>("EDITOR");
 const busy = ref(false);
+const activeSection = ref<"projects" | "achievements" | "join" | "submore" | "releases" | "permissions">("projects");
 
 onMounted(initialize);
 
@@ -63,7 +66,7 @@ async function initialize() {
     }
     const draft = await loadDraft();
     content.value = structuredClone(validateSiteContent(draft.content));
-    releases.value = await listReleases();
+    await refreshReleases();
     if (me.value.role === "ADMIN") users.value = await listUsers();
     message.value = draft.updatedAt
       ? `已载入线上草稿，上次保存于 ${formatTime(draft.updatedAt)}。`
@@ -104,6 +107,12 @@ function removeItem<T>(items: T[], index: number) {
   items.splice(index, 1);
 }
 
+function removeMember(index: number) {
+  const member = content.value.join.members[index];
+  if (!window.confirm(`确定删除“${member.name}”吗？`)) return;
+  content.value.join.members.splice(index, 1);
+}
+
 function moveItem<T>(items: T[], index: number, direction: -1 | 1) {
   const target = index + direction;
   if (target < 0 || target >= items.length) return;
@@ -127,12 +136,28 @@ async function setImage(event: Event, item: ProjectItem | AchievementItem | Memb
   }
 }
 
+async function setWordcloud(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (!file || !me.value) return;
+  busy.value = true;
+  try {
+    const uploaded = await uploadAsset(file, me.value.csrfToken);
+    content.value.submore.wordcloud = uploaded.url;
+    message.value = `图片已上传：${file.name}`;
+  } catch (error) {
+    message.value = errorMessage(error);
+  } finally {
+    busy.value = false;
+    (event.target as HTMLInputElement).value = "";
+  }
+}
+
 async function persistDraft() {
   if (!me.value) return false;
   busy.value = true;
   try {
     await saveDraft(content.value, me.value.csrfToken);
-    message.value = "线上草稿已保存；访客仍会看到当前已发布版本。";
+    message.value = "草稿已保存。";
     return true;
   } catch (error) {
     message.value = errorMessage(error);
@@ -185,11 +210,11 @@ async function publishNow() {
   busy.value = true;
   try {
     await saveDraft(content.value, me.value.csrfToken);
-    const result = await publishContent(content.value, me.value.csrfToken);
+    await publishContent(content.value, me.value.csrfToken);
     localStorage.removeItem(CONTENT_DRAFT_KEY);
     replaceSiteContent(content.value);
-    releases.value = await listReleases();
-    message.value = `版本 ${shortId(result.release.id)} 已发布，访客无需重新加载网站包即可读取。`;
+    await refreshReleases();
+    message.value = "内容已发布。";
   } catch (error) {
     message.value = errorMessage(error);
   } finally {
@@ -208,9 +233,9 @@ async function schedulePublish() {
   try {
     await saveDraft(content.value, me.value.csrfToken);
     const result = await publishContent(content.value, me.value.csrfToken, scheduled.toISOString());
-    releases.value = await listReleases();
+    await refreshReleases();
     publishAt.value = "";
-    message.value = `版本 ${shortId(result.release.id)} 已安排于 ${formatTime(result.release.scheduledAt)} 发布。`;
+    message.value = `已安排于 ${formatTime(result.release.scheduledAt)} 发布。`;
   } catch (error) {
     message.value = errorMessage(error);
   } finally {
@@ -220,12 +245,12 @@ async function schedulePublish() {
 
 async function rollback(item: ReleaseInfo) {
   if (!me.value) return;
-  if (!window.confirm(`确定将版本 ${shortId(item.id)} 的内容重新发布为最新版本吗？`)) return;
+  if (!window.confirm(`确定恢复 ${formatTime(item.publishedAt || item.scheduledAt)} 的内容吗？`)) return;
   busy.value = true;
   try {
-    const result = await rollbackRelease(item.id, me.value.csrfToken);
-    releases.value = await listReleases();
-    message.value = `已从 ${shortId(item.id)} 创建并发布回滚版本 ${shortId(result.release.id)}。`;
+    await rollbackRelease(item.id, me.value.csrfToken);
+    await refreshReleases();
+    message.value = "已恢复并发布所选内容。";
   } catch (error) {
     message.value = errorMessage(error);
   } finally {
@@ -235,12 +260,12 @@ async function rollback(item: ReleaseInfo) {
 
 async function cancelSchedule(item: ReleaseInfo) {
   if (!me.value) return;
-  if (!window.confirm(`确定取消计划版本 ${shortId(item.id)} 吗？`)) return;
+  if (!window.confirm("确定取消这次定时发布吗？")) return;
   busy.value = true;
   try {
     await cancelRelease(item.id, me.value.csrfToken);
-    releases.value = await listReleases();
-    message.value = `已取消计划版本 ${shortId(item.id)}。`;
+    await refreshReleases();
+    message.value = "定时发布已取消。";
   } catch (error) {
     message.value = errorMessage(error);
   } finally {
@@ -270,6 +295,11 @@ async function addUser() {
 
 async function refreshReleases() {
   releases.value = await listReleases();
+  const entries = await Promise.all(releases.value.map(async (release) => {
+    const detail = await loadReleaseContent(release.id).catch(() => undefined);
+    return detail ? [release.id, detail] as const : null;
+  }));
+  releaseContents.value = Object.fromEntries(entries.filter((entry): entry is readonly [string, SiteContent] => entry !== null));
 }
 
 function onRoleChange(userId: number, event: Event) {
@@ -285,7 +315,8 @@ async function signOut() {
 function formatTime(value?: string) {
   return value ? new Intl.DateTimeFormat("zh-CN", {dateStyle: "medium", timeStyle: "short"}).format(new Date(value)) : "—";
 }
-function shortId(value: string) { return value.slice(0, 8); }
+function excerpt(value: string, length = 64) { return value.length > length ? `${value.slice(0, length)}…` : value; }
+function titles(values: Array<{title: string}>) { return values.map((item) => item.title).join("、") || "无"; }
 function roleLabel(role: CmsRole) { return ({NONE: "无权限", EDITOR: "编辑者", ADMIN: "管理员"})[role]; }
 function statusLabel(status: ReleaseInfo["status"]) {
   return ({SCHEDULED: "计划发布", PUBLISHED: "当前版本", SUPERSEDED: "历史版本", CANCELLED: "已取消"})[status];
@@ -296,28 +327,22 @@ function errorMessage(error: unknown) { return error instanceof Error ? error.me
 <template>
   <div class="editor-page">
     <section v-if="loading" class="access-card">
-      <span class="eyebrow">SUBIT CONTENT STUDIO</span>
-      <h1>正在连接内容服务</h1>
-      <p>正在确认 SSubitO 登录状态并载入线上草稿。</p>
+      <h1>正在载入</h1>
     </section>
     <section v-else-if="!me" class="access-card">
-      <span class="eyebrow">SUBIT CONTENT STUDIO</span>
-      <h1>登录后编辑网站</h1>
-      <p>{{ serviceError || '内容后台使用 SSubitO 识别社团成员身份。' }}</p>
-      <a class="login-button" :href="loginUrl">使用 SSubitO 登录</a>
+      <h1>请登录后继续</h1>
+      <p v-if="serviceError">{{ serviceError }}</p>
+      <a class="login-button" :href="loginUrl">前往 SSubitO 登录</a>
     </section>
     <section v-else-if="me.role === 'NONE'" class="access-card">
-      <span class="eyebrow">SIGNED IN AS #{{ me.userId }}</span>
       <h1>尚未获得编辑权限</h1>
-      <p>你已以 {{ me.username }} 登录。请让网站管理员将你的角色设为 Editor 或 Admin。</p>
+      <p>你已以 {{ me.username }} 登录，请联系网站管理员开通权限。</p>
       <button type="button" @click="signOut">退出登录</button>
     </section>
     <template v-else>
     <header class="editor-hero">
       <div>
-        <span class="eyebrow">SUBIT CONTENT STUDIO</span>
         <h1>网站内容编辑器</h1>
-        <p>编辑和上传内容无需修改代码或重新打包；保存草稿不会影响访客，发布后静态官网会自动读取新版本。</p>
       </div>
       <div class="status" aria-live="polite">
         <strong>{{ me.username }}</strong> · {{ roleLabel(me.role) }}<br/>
@@ -338,10 +363,19 @@ function errorMessage(error: unknown) { return error instanceof Error ? error.me
       <input ref="importInput" class="visually-hidden" type="file" accept="application/json,.json" @change="importJson"/>
     </nav>
 
+    <nav class="category-nav" aria-label="编辑内容分类">
+      <button type="button" :class="{active: activeSection === 'projects'}" @click="activeSection = 'projects'">首页项目</button>
+      <button type="button" :class="{active: activeSection === 'achievements'}" @click="activeSection = 'achievements'">项目与成就</button>
+      <button type="button" :class="{active: activeSection === 'join'}" @click="activeSection = 'join'">招新与社员</button>
+      <button type="button" :class="{active: activeSection === 'submore'}" @click="activeSection = 'submore'">SubMore</button>
+      <button type="button" :class="{active: activeSection === 'releases'}" @click="activeSection = 'releases'">发布历史</button>
+      <button v-if="me.role === 'ADMIN'" type="button" :class="{active: activeSection === 'permissions'}" @click="activeSection = 'permissions'">成员权限</button>
+    </nav>
+
     <main>
-      <section class="editor-section">
+      <section v-if="activeSection === 'projects'" class="editor-section">
         <div class="section-heading">
-          <div><span>01</span><h2>首页项目轮播</h2><p>拖动顺序由上下移动按钮控制；首页会按此顺序自动轮播。</p></div>
+          <div><span>01</span><h2>首页项目轮播</h2></div>
           <button type="button" @click="addProject">＋ 添加项目</button>
         </div>
         <article v-for="(item, index) in content.projects" :key="index" class="edit-card project-card">
@@ -349,14 +383,12 @@ function errorMessage(error: unknown) { return error instanceof Error ? error.me
           <div class="image-editor">
             <img :src="item.image" :alt="item.imageAlt"/>
             <label>替换主图<input type="file" accept="image/*" @change="setImage($event, item)"/></label>
+            <label>替换手机图<input type="file" accept="image/*" @change="setImage($event, item, 'secondaryImage')"/></label>
           </div>
           <div class="fields">
             <label>项目名称<input v-model="item.title"/></label>
             <label>一句话介绍<input v-model="item.subtitle"/></label>
             <div class="field-row"><label>按钮文字<input v-model="item.linkLabel"/></label><label>跳转链接<input v-model="item.href" type="url"/></label></div>
-            <label>主图路径<input v-model="item.image"/></label>
-            <label>图片替代文字<input v-model="item.imageAlt"/></label>
-            <label>手机图（可选）<input v-model="item.secondaryImage" placeholder="没有则留空"/></label>
           </div>
           <div class="card-actions">
             <button type="button" :disabled="index === 0" @click="moveItem(content.projects, index, -1)">上移</button>
@@ -366,9 +398,9 @@ function errorMessage(error: unknown) { return error instanceof Error ? error.me
         </article>
       </section>
 
-      <section class="editor-section">
+      <section v-else-if="activeSection === 'achievements'" class="editor-section">
         <div class="section-heading">
-          <div><span>02</span><h2>项目与成就</h2><p>建议把最新内容放在最前；卡片会自动适配不同屏幕宽度。</p></div>
+          <div><span>02</span><h2>项目与成就</h2></div>
           <button type="button" @click="addAchievement">＋ 添加成就</button>
         </div>
         <article v-for="(item, index) in content.achievements" :key="index" class="edit-card compact-card">
@@ -376,15 +408,15 @@ function errorMessage(error: unknown) { return error instanceof Error ? error.me
           <div class="fields">
             <div class="field-row"><label>状态<select v-model="item.type"><option value="event">活动类成就</option><option value="running">运行中</option><option value="archived">已存档</option></select></label><label>标题<input v-model="item.title"/></label></div>
             <label>描述<textarea v-model="item.description" rows="2"/></label>
-            <div class="field-row"><label>图片路径<input v-model="item.image"/></label><label>项目链接<input v-model="item.href"/></label></div>
+            <label>项目链接<input v-model="item.href"/></label>
           </div>
           <div class="card-actions inline"><button type="button" :disabled="index === 0" @click="moveItem(content.achievements, index, -1)">↑</button><button type="button" :disabled="index === content.achievements.length - 1" @click="moveItem(content.achievements, index, 1)">↓</button><button type="button" class="danger" @click="removeItem(content.achievements, index)">删除</button></div>
         </article>
       </section>
 
-      <section class="editor-section">
+      <section v-else-if="activeSection === 'join'" class="editor-section">
         <div class="section-heading">
-          <div><span>03</span><h2>招新与社员</h2><p>更新招新说明、届次和社员卡片。</p></div>
+          <div><span>03</span><h2>招新与社员</h2></div>
           <button type="button" @click="addMember">＋ 添加社员</button>
         </div>
         <div class="edit-card text-card">
@@ -392,61 +424,68 @@ function errorMessage(error: unknown) { return error instanceof Error ? error.me
         </div>
         <div class="member-edit-grid">
           <article v-for="(item, index) in content.join.members" :key="index" class="edit-card member-edit-card">
-            <div class="image-editor small"><img :src="item.image" alt=""/><label>修改 Demo 图片<input type="file" accept="image/*" @change="setImage($event, item)"/></label></div>
-            <div class="fields"><label>姓名/职务<input v-model="item.name"/></label><label>简介<input v-model="item.description"/></label><label>Demo 图片路径<input v-model="item.image"/></label></div>
-            <button type="button" class="danger delete-only" @click="removeItem(content.join.members, index)">删除</button>
+            <div class="image-editor small"><img :src="item.image" :alt="item.name"/><label>更换照片<input type="file" accept="image/*" @change="setImage($event, item)"/></label></div>
+            <div class="fields"><label>姓名/职务<input v-model="item.name"/></label><label>简介<input v-model="item.description"/></label></div>
+            <div class="card-actions member-actions"><button type="button" class="danger" @click="removeMember(index)">删除成员</button></div>
           </article>
         </div>
       </section>
 
-      <section class="editor-section">
+      <section v-else-if="activeSection === 'submore'" class="editor-section">
         <div class="section-heading">
-          <div><span>04</span><h2>SubMore 社团文化</h2><p>铁锅、影相、词云和成员语录均可独立轮换。</p></div>
+          <div><span>04</span><h2>SubMore 社团文化</h2></div>
           <button type="button" @click="savePreview('/submore')">预览 SubMore</button>
         </div>
         <h3>铁锅纪念馆 <button type="button" @click="addPot">＋ 添加</button></h3>
-        <article v-for="(item, index) in content.submore.pots" :key="index" class="edit-card compact-card">
-          <div class="image-editor small"><img :src="item.image" alt=""/><label>替换图片<input type="file" accept="image/*" @change="setImage($event, item)"/></label></div>
-          <div class="fields"><div class="field-row"><label>名称<input v-model="item.title"/></label><label>届次/社长<input v-model="item.subtitle"/></label></div><label>图片路径<input v-model="item.image"/></label></div>
-          <button type="button" class="danger delete-only" @click="removeItem(content.submore.pots, index)">删除</button>
-        </article>
+        <div class="compact-grid">
+          <article v-for="(item, index) in content.submore.pots" :key="index" class="edit-card compact-card">
+            <div class="image-editor small"><img :src="item.image" alt=""/><label>替换图片<input type="file" accept="image/*" @change="setImage($event, item)"/></label></div>
+            <div class="fields"><label>名称<input v-model="item.title"/></label><label>届次/社长<input v-model="item.subtitle"/></label></div>
+            <button type="button" class="danger delete-only" @click="removeItem(content.submore.pots, index)">删除</button>
+          </article>
+        </div>
         <h3>珍藏影相 <button type="button" @click="addPhoto">＋ 添加</button></h3>
         <div class="member-edit-grid">
           <article v-for="(item, index) in content.submore.photos" :key="index" class="edit-card member-edit-card">
             <div class="image-editor small"><img :src="item.image" alt=""/><label>替换图片<input type="file" accept="image/*" @change="setImage($event, item)"/></label></div>
-            <div class="fields"><label>说明<input v-model="item.description"/></label><label>图片路径<input v-model="item.image"/></label></div>
+            <div class="fields"><label>说明<input v-model="item.description"/></label></div>
             <button type="button" class="danger delete-only" @click="removeItem(content.submore.photos, index)">删除</button>
           </article>
         </div>
         <h3>词云与语录 <button type="button" @click="addQuote">＋ 添加语录</button></h3>
-        <div class="edit-card text-card"><div class="fields"><label>词云图片路径<input v-model="content.submore.wordcloud"/></label><label>页面导语<textarea v-model="content.submore.intro" rows="2"/></label></div></div>
+        <div class="edit-card compact-card"><div class="image-editor small"><img :src="content.submore.wordcloud" alt="词云"/><label>替换词云<input type="file" accept="image/*" @change="setWordcloud"/></label></div><div class="fields"><label>页面导语<textarea v-model="content.submore.intro" rows="2"/></label></div></div>
         <article v-for="(item, index) in content.submore.quotes" :key="index" class="edit-card quote-edit-card">
           <div class="fields"><label>语录<textarea v-model="item.text" rows="2"/></label><label>署名<input v-model="item.author"/></label></div>
           <button type="button" class="danger delete-only" @click="removeItem(content.submore.quotes, index)">删除</button>
         </article>
       </section>
 
-      <section class="editor-section">
+      <section v-else-if="activeSection === 'releases'" class="editor-section">
         <div class="section-heading">
-          <div><span>05</span><h2>发布历史</h2><p>每次发布都会生成不可变版本，可以随时回滚；计划版本可在生效前取消。</p></div>
+          <div><span>05</span><h2>发布历史</h2></div>
           <button type="button" :disabled="busy" @click="refreshReleases">刷新</button>
         </div>
         <div class="release-list">
           <article v-for="item in releases" :key="item.id" class="release-row">
-            <div><strong>{{ shortId(item.id) }}</strong><span :class="['release-status', item.status.toLowerCase()]">{{ statusLabel(item.status) }}</span></div>
-            <span>{{ formatTime(item.publishedAt || item.scheduledAt) }}</span>
-            <span>操作人 #{{ item.publishedBy }}</span>
+            <div v-if="releaseContents[item.id]" class="release-content">
+              <strong>首页：{{ titles(releaseContents[item.id].projects) }}</strong>
+              <span>项目与成就：{{ titles(releaseContents[item.id].achievements) }}</span>
+              <span>招新：{{ excerpt(releaseContents[item.id].join.intro) }}</span>
+              <span>SubMore：{{ titles(releaseContents[item.id].submore.pots) }}</span>
+            </div>
+            <div v-else class="release-content"><strong>内容暂时无法载入</strong></div>
+            <div class="release-meta"><span :class="['release-status', item.status.toLowerCase()]">{{ statusLabel(item.status) }}</span><span>{{ formatTime(item.publishedAt || item.scheduledAt) }}</span></div>
             <div class="release-actions">
-              <button v-if="item.status !== 'CANCELLED'" type="button" :disabled="busy || item.status === 'PUBLISHED'" @click="rollback(item)">回滚到此版本</button>
+              <button v-if="item.status !== 'CANCELLED'" type="button" :disabled="busy || item.status === 'PUBLISHED'" @click="rollback(item)">恢复这份内容</button>
               <button v-if="item.status === 'SCHEDULED'" type="button" class="danger" :disabled="busy" @click="cancelSchedule(item)">取消计划</button>
             </div>
           </article>
         </div>
       </section>
 
-      <section v-if="me.role === 'ADMIN'" class="editor-section">
+      <section v-else-if="activeSection === 'permissions' && me.role === 'ADMIN'" class="editor-section">
         <div class="section-heading">
-          <div><span>06</span><h2>成员权限</h2><p>未列出的 SSubitO 用户默认为 None；Editor 可以编辑和发布，Admin 还可以管理成员。</p></div>
+          <div><span>06</span><h2>成员权限</h2></div>
         </div>
         <div class="permission-add">
           <label>SSubitO 用户 ID<input v-model.number="newUserId" type="number" min="1" placeholder="例如 123"/></label>
@@ -468,7 +507,7 @@ function errorMessage(error: unknown) { return error instanceof Error ? error.me
 </template>
 
 <style scoped lang="scss">
-.editor-page { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 48px 0 100px; color: #0d141c; }
+.editor-page { width: min(1360px, calc(100% - 40px)); margin: 0 auto; padding: 48px 0 100px; color: #0d141c; }
 .access-card { max-width: 680px; margin: 12vh auto; padding: 42px; border: 1px solid #dbe4ed; border-radius: 18px; background: white; box-shadow: 0 18px 50px rgba(13,20,28,.08); }
 .access-card h1 { margin: 12px 0; }.access-card p { margin: 0 0 24px; color: #526779; }
 .login-button { display: inline-block; padding: 11px 18px; border-radius: 9px; background: #0066cc; color: white; text-decoration: none; font-weight: 600; }
@@ -478,6 +517,9 @@ h1 { margin: 8px 0; font-size: clamp(34px, 5vw, 62px); letter-spacing: -.04em; }
 .editor-hero p { max-width: 640px; margin: 0; color: #526779; font-size: 17px; }
 .status { padding: 18px; border: 1px solid #dbe4ed; border-radius: 12px; background: #f7f9fc; color: #34495e; }
 .toolbar { position: sticky; z-index: 20; top: 65px; display: flex; gap: 10px; padding: 12px; border: 1px solid #dbe4ed; border-radius: 14px; background: rgba(255,255,255,.94); box-shadow: 0 8px 30px rgba(13,20,28,.08); backdrop-filter: blur(14px); }
+.category-nav { display: flex; gap: 6px; margin-top: 24px; padding-bottom: 10px; border-bottom: 1px solid #dbe4ed; overflow-x: auto; white-space: nowrap; }
+.category-nav button { border-color: transparent; background: transparent; }
+.category-nav button.active { border-color: #b9d7f2; background: #edf6fd; color: #0066cc; }
 .schedule-field { display: flex; align-items: center; gap: 7px; padding-left: 8px; color: #536779; white-space: nowrap; font-size: 13px; }
 .schedule-field input { padding: 7px; border: 1px solid #ccd7e2; border-radius: 7px; }
 button, label { font: inherit; }
@@ -487,7 +529,7 @@ button:disabled { opacity: .38; cursor: not-allowed; }
 button.primary { border-color: #0066cc; background: #0066cc; color: white; }
 button.danger { color: #b42318; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-.editor-section { padding: 70px 0 0; }
+.editor-section { padding: 40px 0 0; }
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
 .section-heading span { color: #90a1b2; font: 700 14px/1 "JetBrains Mono", monospace; }
 .section-heading h2 { margin: 7px 0 2px; font-size: 30px; }
@@ -509,12 +551,17 @@ button.danger { color: #b42318; }
 .card-actions { display: grid; gap: 7px; }.card-actions.inline { grid-template-columns: repeat(3, auto); }.delete-only { align-self: end; }
 .compact-card { grid-template-columns: 120px minmax(0, 1fr) auto; }
 .text-card { grid-template-columns: 1fr; }
-.member-edit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
-.member-edit-card { grid-template-columns: 92px minmax(0, 1fr); }.member-edit-card .delete-only { grid-column: 1 / -1; justify-self: end; }
+.member-edit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.member-edit-card { grid-template-columns: 130px minmax(0, 1fr) auto; }.member-edit-card .delete-only { grid-column: 1 / -1; justify-self: end; }
+.member-actions { align-self: stretch; display: flex; align-items: flex-end; width: auto; }
+.member-actions .danger { white-space: nowrap; }
+.compact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.compact-grid .compact-card { grid-template-columns: 120px minmax(0, 1fr) auto; margin-bottom: 0; }
 .quote-edit-card { grid-template-columns: minmax(0, 1fr) auto; }
 .release-list, .permission-list { display: grid; gap: 9px; }
-.release-row { display: grid; grid-template-columns: 1.2fr 1fr .7fr auto; gap: 18px; align-items: center; padding: 14px 16px; border: 1px solid #dbe4ed; border-radius: 10px; background: white; color: #536779; font-size: 14px; }
-.release-row strong { margin-right: 10px; color: #0d141c; font-family: "JetBrains Mono", monospace; }
+.release-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 22px; align-items: center; padding: 16px 18px; border: 1px solid #dbe4ed; border-radius: 10px; background: white; color: #536779; font-size: 14px; }
+.release-content { display: grid; gap: 4px; min-width: 0; }.release-content strong { overflow: hidden; color: #0d141c; text-overflow: ellipsis; white-space: nowrap; }.release-content span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.release-meta { display: grid; justify-items: start; gap: 7px; min-width: 120px; }
 .release-status { padding: 3px 7px; border-radius: 999px; background: #edf1f5; font-size: 11px; }.release-status.published { background: #dcfce7; color: #166534; }.release-status.scheduled { background: #dbeafe; color: #1d4ed8; }.release-status.cancelled { color: #8b97a3; }
 .release-actions { display: flex; justify-content: flex-end; gap: 6px; }
 .permission-add { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; margin-bottom: 14px; padding: 16px; border-radius: 12px; background: #f7f9fc; }
@@ -524,11 +571,13 @@ button.danger { color: #b42318; }
 .permission-row div { display: grid; gap: 3px; }.permission-row span { color: #66788a; font-size: 12px; }
 
 @media (max-width: 760px) {
-  .editor-page { width: min(100% - 28px, 1180px); padding-top: 20px; }
+  .editor-page { width: min(100% - 28px, 1360px); padding-top: 20px; }
   .editor-hero { grid-template-columns: 1fr; gap: 18px; }
   .toolbar { top: 65px; overflow-x: auto; white-space: nowrap; }
+  .category-nav { margin-top: 18px; }
   .section-heading { align-items: flex-start; flex-direction: column; }
   .edit-card, .compact-card { grid-template-columns: 1fr; }
+  .member-edit-grid, .compact-grid { grid-template-columns: 1fr; }
   .image-editor img, .image-editor.small img { height: 180px; }
   .card-actions { grid-template-columns: repeat(3, 1fr); }
   .field-row { grid-template-columns: 1fr; }
