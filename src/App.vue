@@ -50,11 +50,12 @@ watch(() => route.fullPath, () => {
   <SearchDialog :open="searchOpen" @close="searchOpen = false"/>
 </template>
 <style scoped lang="scss">
-$navbar-height: 65px;
+$navbar-height: 64px;
 $divider-color: #E8EDF5;
 .nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   position: fixed;
   top: 0;
@@ -62,12 +63,15 @@ $divider-color: #E8EDF5;
   z-index: 9999;
   width: 100%;
   height: $navbar-height;
+  padding: 0 var(--page-gutter);
+  box-sizing: border-box;
 
-  background-color: white;
+  background-color: rgba(255, 255, 255, .96);
 
   border-bottom-color: $divider-color;
   border-bottom-width: 1px;
   border-bottom-style: solid;
+  backdrop-filter: blur(14px);
 
   user-select: none;
 
@@ -76,41 +80,46 @@ $divider-color: #E8EDF5;
     align-items: center;
   }
 
-  .left { margin-left: 40px; }
+  .left { margin-left: 0; }
 
   .right {
-    margin-right: 30px;
-    gap: 4px;
+    margin-right: 0;
+    gap: 6px;
 
     a {
       display: flex;
       align-items: center;
 
-      width: 88px;
+      width: auto;
       height: $navbar-height;
+      padding: 0 14px;
+      border-radius: 0;
 
       text-decoration: none;
-      color: black;
+      color: #161616;
+      font-size: 15px;
+      font-weight: 650;
 
       &:hover {
         background-color: rgba(0, 0, 0, 0.055);
       }
 
-      &.router-link-active span { color: #0066cc; }
+      &.router-link-active span { color: var(--brand-blue); }
 
       span {
         flex-grow: 1;
 
         text-align: center;
-        font-weight: 500;
+        font-weight: inherit;
       }
     }
   }
 }
 
 .logo {
-  width: 78px;
-  height: 39px;
+  display: block;
+  width: 68px;
+  height: auto;
 }
 
 .searchButton, .menuButton {
@@ -124,7 +133,7 @@ $divider-color: #E8EDF5;
   place-items: center;
   width: 40px;
   height: 40px;
-  margin-left: 8px;
+  margin-left: 4px;
   border-radius: 8px;
 
   &:hover { background: rgba(0, 0, 0, .055); }
@@ -143,7 +152,7 @@ $divider-color: #E8EDF5;
 
 @media (max-width: 760px) {
   .nav {
-    .left { margin-left: 18px; }
+    padding: 0 14px 0 18px;
 
     .right {
       position: absolute;
@@ -163,8 +172,10 @@ $divider-color: #E8EDF5;
       &.open { display: flex; }
 
       a {
+        box-sizing: border-box;
         width: 100%;
         height: 48px;
+        padding: 0;
         border-radius: 8px;
         span { padding-left: 14px; text-align: left; }
       }
@@ -177,7 +188,7 @@ $divider-color: #E8EDF5;
     justify-content: center;
     gap: 5px;
     width: 48px;
-    margin-right: 10px;
+    margin-right: 0;
 
     span { width: 22px; height: 2px; margin: 0 auto; background: #0d141c; }
   }

@@ -22,7 +22,7 @@ defineProps<{ item: ProjectItem }>();
 .project-showcase {
   display: flex;
   flex-direction: column;
-  min-height: 662px;
+  min-height: 590px;
   overflow: hidden;
   background: white;
   color: #1d1d1f;
@@ -32,27 +32,27 @@ defineProps<{ item: ProjectItem }>();
 .copy {
   position: relative;
   z-index: 2;
-  padding-top: 50px;
+  padding-top: 40px;
 
   h3 {
     margin: 0;
     font-family: "JetBrains Mono", monospace;
-    font-size: clamp(38px, 3.76vw, 56px);
+    font-size: clamp(34px, 3vw, 44px);
     line-height: 1.1;
     letter-spacing: -.01em;
   }
 
   p {
     margin: 5px 16px 0;
-    font-size: clamp(20px, 1.88vw, 28px);
-    line-height: 1.3;
+    font-size: clamp(18px, 1.55vw, 21px);
+    line-height: 1.45;
   }
 
   a {
     display: inline-block;
     margin-top: 10px;
     color: #06c;
-    font-size: clamp(17px, 1.42vw, 21px);
+    font-size: 17px;
     line-height: 29px;
     text-decoration: none;
 
@@ -63,8 +63,8 @@ defineProps<{ item: ProjectItem }>();
 .visual {
   position: relative;
   flex: 1;
-  min-height: 390px;
-  margin-top: 22px;
+  min-height: 360px;
+  margin-top: 18px;
 
   .primary {
     display: block;
@@ -87,7 +87,7 @@ defineProps<{ item: ProjectItem }>();
 }
 
 @media (max-width: 700px) {
-  .project-showcase { min-height: 540px; }
+  .project-showcase { min-height: 520px; }
   .copy { padding-top: 42px; }
   .visual { min-height: 310px; margin-top: 12px; }
   .visual .primary { width: 94%; max-height: 360px; }

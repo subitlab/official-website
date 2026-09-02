@@ -8,9 +8,11 @@ const props = defineProps<{
 }>();
 const currentIndex = ref(0)
 const paused = ref(false);
+const direction = ref<'next' | 'previous'>('next');
 let timer: ReturnType<typeof setInterval> | undefined;
 
-function select(index: number) {
+function select(index: number, requestedDirection?: 'next' | 'previous') {
+  direction.value = requestedDirection ?? (index < currentIndex.value ? 'previous' : 'next');
   currentIndex.value = (index + props.items.length) % props.items.length;
   restart();
 }
@@ -18,7 +20,10 @@ function select(index: number) {
 function restart() {
   if (timer) clearInterval(timer);
   timer = setInterval(() => {
-    if (!paused.value) currentIndex.value = (currentIndex.value + 1) % props.items.length;
+    if (!paused.value) {
+      direction.value = 'next';
+      currentIndex.value = (currentIndex.value + 1) % props.items.length;
+    }
   }, 5000);
 }
 
@@ -33,15 +38,15 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="carousel-container" @mouseenter="paused = true" @mouseleave="paused = false" @focusin="paused = true" @focusout="paused = false">
-    <transition-group name="slide" tag="div" class="carousel-inner">
+    <transition-group :name="`slide-${direction}`" tag="div" class="carousel-inner">
       <ProjectShowcase
           :item="props.items[currentIndex]"
           :key="currentIndex"
           class="carousel-item"
       />
     </transition-group>
-    <button class="arrow previous" type="button" aria-label="上一个项目" @click="select(currentIndex - 1)">‹</button>
-    <button class="arrow next" type="button" aria-label="下一个项目" @click="select(currentIndex + 1)">›</button>
+    <button class="arrow previous" type="button" aria-label="上一个项目" @click="select(currentIndex - 1, 'previous')">‹</button>
+    <button class="arrow next" type="button" aria-label="下一个项目" @click="select(currentIndex + 1, 'next')">›</button>
     <div class="dots" aria-label="选择项目">
       <button
         v-for="(item, index) in props.items"
@@ -60,7 +65,7 @@ onBeforeUnmount(() => {
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 662px;
+  height: 590px;
   min-height: 0;
   overflow: hidden;
 }
@@ -79,26 +84,40 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 
-.slide-enter-active,
-.slide-leave-active {
+.slide-next-enter-active,
+.slide-next-leave-active,
+.slide-previous-enter-active,
+.slide-previous-leave-active {
   transition: transform 0.8s ease, opacity 0.8s ease;
 }
 
-.slide-enter-from {
+.slide-next-enter-from {
   transform: translateX(100%);
   opacity: 0;
 }
-.slide-enter-to {
+.slide-next-enter-to,
+.slide-previous-enter-to {
   transform: translateX(0%);
   opacity: 1;
 }
 
-.slide-leave-from {
+.slide-next-leave-from,
+.slide-previous-leave-from {
   transform: translateX(0%);
   opacity: 1;
 }
-.slide-leave-to {
+.slide-next-leave-to {
   transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-previous-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-previous-leave-to {
+  transform: translateX(100%);
   opacity: 0;
 }
 
@@ -114,13 +133,13 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   background: rgba(255, 255, 255, .9);
   color: #0d141c;
-  box-shadow: 0 4px 18px rgba(13, 20, 28, .12);
+  box-shadow: 0 6px 22px rgba(13, 20, 28, .11);
   cursor: pointer;
   font-size: 32px;
   line-height: 1;
 
-  &.previous { left: 24px; }
-  &.next { right: 24px; }
+  &.previous { left: max(24px, calc((100% - var(--content-width)) / 2)); }
+  &.next { right: max(24px, calc((100% - var(--content-width)) / 2)); }
 }
 
 .dots {
@@ -147,9 +166,18 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 700px) {
-  .carousel-container { height: 540px; min-height: 540px; }
+  .carousel-container { height: 520px; min-height: 520px; }
   .arrow { width: 38px; height: 38px; top: 56%; }
   .arrow.previous { left: 10px; }
   .arrow.next { right: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-next-enter-active,
+  .slide-next-leave-active,
+  .slide-previous-enter-active,
+  .slide-previous-leave-active {
+    transition: none;
+  }
 }
 </style>

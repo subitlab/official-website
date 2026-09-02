@@ -18,9 +18,9 @@ defineProps<{color: string, backgroundColor: string}>();
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 101px;
-  margin-top: -41px;
-  margin-bottom: -73px;
+  height: 72px;
+  margin-top: -28px;
+  margin-bottom: -52px;
   background-color: v-bind(backgroundColor);
   pointer-events: none;
 

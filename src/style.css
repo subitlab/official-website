@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
+  --page-gutter: clamp(24px, 4.2vw, 56px);
+  --content-width: 1120px;
+  --text-primary: #161616;
+  --text-secondary: #4b5563;
+  --surface-subtle: #f5f7fa;
+  --brand-blue: #147bd1;
+
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
                "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -12,15 +19,42 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  color: var(--text-primary);
+  background: white;
+  scroll-padding-top: 64px;
+}
+
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 #app {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(20, 123, 209, .42);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: #b9e1ff;
+  color: #0d141c;
 }

@@ -182,6 +182,8 @@ const code =
 
 <style scoped lang="scss">
 .block {
+  --section-index-top: 42px;
+
   position: relative;
   z-index: 0;
   display: flex;
@@ -191,17 +193,17 @@ const code =
   .no {
     position: absolute;
     z-index: -1;
-    top: clamp(32px, 3vw, 48px);
+    top: var(--section-index-top);
     left: 0;
     margin: 10px;
     color: rgba(156, 163, 175, .3);
-    font: 400 100px/1 "JetBrains Mono", monospace;
+    font: 400 clamp(64px, 6vw, 80px)/1 "JetBrains Mono", monospace;
   }
 }
 
 .blockTitle {
-  min-height: 600px;
-  height: clamp(600px, calc(100svh - 65px), 657px);
+  min-height: 560px;
+  height: clamp(560px, calc(100svh - 64px), 620px);
   background: #161616;
   color: white;
 
@@ -209,122 +211,133 @@ const code =
     box-sizing: border-box;
     align-items: center;
     flex-direction: row;
-    gap: clamp(28px, 3vw, 45px);
+    gap: clamp(48px, 6vw, 84px);
     width: 100%;
-    max-width: 1488px;
+    max-width: var(--content-width);
     min-height: inherit;
-    padding: 33px clamp(24px, 6.45vw, 96px);
+    padding: 48px var(--page-gutter);
   }
 
   .titleLeft {
-    width: min(44vw, 640px);
-    max-width: 640px;
+    width: min(42vw, 480px);
+    max-width: 480px;
     margin: 0;
     word-break: keep-all;
 
     h1 {
       margin: 0;
-      font: 700 clamp(64px, 6vw, 90px)/1.12 "JetBrains Mono", monospace;
+      font: 700 clamp(52px, 5vw, 66px)/1.08 "JetBrains Mono", monospace;
+      letter-spacing: .015em;
 
-      &.blue { color: #2990eb; font-size: clamp(82px, 8vw, 120px); }
+      &.blue { color: #2990eb; font-size: clamp(66px, 6.5vw, 88px); }
+
+      + h1 { margin-top: 8px; }
     }
 
     .subtitle {
-      min-height: 120px;
-      margin-top: clamp(70px, 9vw, 135px);
-      font-size: clamp(24px, 2.22vw, 33px);
+      min-height: 88px;
+      margin-top: clamp(50px, 6vw, 72px);
+      font-size: clamp(20px, 1.9vw, 25px);
       font-weight: 600;
-      line-height: 1.82;
+      line-height: 1.65;
     }
   }
 
   .titleRight {
     box-sizing: border-box;
-    flex: 0 1 611px;
-    width: min(42vw, 611px);
-    height: min(39.72vw, 591px);
+    flex: 0 1 520px;
+    width: min(43vw, 520px);
+    height: min(40.65vw, 520px);
     min-height: 500px;
     max-width: 100%;
     margin-left: auto;
     overflow: hidden;
-    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 12px;
     background: #000;
-    font-size: 14px;
+    font-size: 11px;
 
     :deep(pre) {
       box-sizing: border-box;
       width: 100%;
       height: 100%;
       margin: 0;
-      padding: 24px;
+      padding: 16px;
       overflow: hidden;
       border-radius: 16px;
       font-size: inherit;
-      line-height: 20px;
+      line-height: 16px;
     }
   }
 }
 
 .block0 {
+  --section-index-top: 86px;
+
   box-sizing: border-box;
+  align-items: center;
   justify-content: center;
-  gap: clamp(40px, 11vw, 164px);
-  min-height: 776px;
-  padding: 0 clamp(24px, 5vw, 74px);
+  gap: 64px;
+  min-height: 604px;
+  padding: 44px max(24px, calc((100% - 1056px) / 2)) 0;
 
   .left {
     display: flex;
     flex-direction: column;
-    width: min(40vw, 554px);
-    padding: 145px 0 40px;
+    width: min(44vw, 492px);
+    padding: 64px 0 0;
 
-    .title { font-size: clamp(36px, 3.36vw, 50px); font-weight: 700; line-height: 1.3; }
-    .content { margin: 22px 0 36px; font-size: clamp(18px, 2.01vw, 30px); line-height: 1.12; }
+    .title { font-size: clamp(32px, 3vw, 40px); font-weight: 700; line-height: 1.25; letter-spacing: -.025em; }
+    .content { margin: 18px 0 32px; color: #3d4650; font-size: clamp(17px, 1.45vw, 19px); line-height: 1.7; }
   }
 
   .right {
     display: flex;
     flex-direction: column;
-    width: min(38vw, 535px);
-    padding: 200px 0 40px;
+    width: min(42vw, 500px);
+    padding: 64px 0 0;
 
-    .photo { width: 100%; border-radius: 8px; box-shadow: 2px 2px 4px 1px rgba(0,0,0,.25); }
-    .note { color: #848d97; text-align: center; font-size: clamp(18px, 2.01vw, 30px); }
+    .photo { width: 100%; border-radius: 12px; box-shadow: 0 18px 44px rgba(13,20,28,.16); }
+    .note { margin-top: 12px; color: #6b7280; text-align: center; font-size: 15px; }
   }
 }
 
 .block1 {
-  min-height: 677px;
-  margin-top: -23px;
+  min-height: 650px;
+  margin-top: -14px;
   flex-direction: column;
   background: #f7f9fc;
 
   > .title {
-    width: min(calc(100% - 48px), 1206px);
-    margin: 82px auto 41px;
-    font-size: clamp(38px, 3.23vw, 48px);
+    width: min(calc(100% - 48px), 1056px);
+    margin: 128px auto 36px;
+    font-size: clamp(34px, 3vw, 42px);
     font-weight: 700;
-    line-height: 59px;
+    line-height: 1.2;
   }
 
   .main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 70px;
-    width: min(calc(100% - 48px), 1034px);
+    gap: 36px;
+    width: min(calc(100% - 48px), 1000px);
     margin: 0 auto;
     padding: 0 0 39px;
 
     .frame {
-      width: 298px;
+      width: min(30.6%, 310px);
+      overflow: hidden;
+      border: 1px solid #dfe5ec;
+      border-radius: 12px;
+      background: white;
 
       .iconBox {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 298px;
-        height: 298px;
+        width: 100%;
+        height: 238px;
         background: #d7ebff;
 
         > img {
@@ -340,21 +353,24 @@ const code =
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        width: 298px;
-        height: 158px;
-        padding: 10px 20px;
+        width: 100%;
+        height: auto;
+        min-height: 160px;
+        padding: 22px 24px 24px;
         background: white;
 
         .descNote { color: #42425a; font-size: 14px; }
-        .descTitle { margin-bottom: 15px; font-size: 28px; font-weight: 700; }
-        .descInfo { font-size: 16px; line-height: 1.92; }
+        .descTitle { margin-bottom: 14px; font-size: 26px; font-weight: 700; }
+        .descInfo { color: #343b44; font-size: 16px; line-height: 1.7; }
       }
     }
   }
 }
 
 .block2 {
-  min-height: 936px;
+  --section-index-top: 86px;
+
+  min-height: 0;
   flex-direction: column;
   background: #000;
   color: white;
@@ -363,20 +379,21 @@ const code =
     display: flex;
 
     .left, .right { display: flex; flex-direction: column; padding: 0; }
-    .left .title { font-size: 48px; font-weight: 700; }
-    .left .content { margin-top: 20px; font-size: 22px; line-height: 33px; }
-    .photo { width: 100%; border-radius: 8px; }
-    .note { color: #9ea6ad; text-align: center; font-size: 30px; }
+    .left .title { font-size: clamp(34px, 3vw, 42px); font-weight: 700; letter-spacing: -.025em; }
+    .left .content { margin-top: 18px; color: #d1d5db; font-size: 19px; line-height: 1.7; }
+    .photo { width: 100%; border-radius: 12px; }
+    .note { margin-top: 12px; color: #9ea6ad; text-align: center; font-size: 15px; }
 
-    .right.flexRow { flex-direction: row; gap: 24px; padding-top: 25px; }
+    .right.flexRow { flex-direction: row; gap: 20px; padding-top: 16px; }
     .card {
       box-sizing: border-box;
-      width: 248px;
+      width: 240px;
       min-width: 0;
-      height: 160px;
-      padding: 24px;
-      border: 2px solid rgba(1, 113, 212, .2);
-      border-radius: 8px;
+      min-height: 158px;
+      height: auto;
+      padding: 22px;
+      border: 1px solid rgba(41, 144, 235, .34);
+      border-radius: 10px;
       background: white;
       color: #4b5563;
 
@@ -387,34 +404,35 @@ const code =
 
   .segment:first-of-type {
     box-sizing: border-box;
-    gap: 81px;
-    width: min(calc(100% - 48px), 1152px);
-    min-height: 400px;
+    gap: 72px;
+    width: min(calc(100% - 48px), 1056px);
+    min-height: 0;
     margin: 0 auto;
-    padding-top: 118px;
+    padding-top: 172px;
 
-    > .left, > .right { width: 520px; }
+    > .left, > .right { width: 492px; }
   }
 
   .segment:last-of-type {
-    gap: 117px;
-    width: min(calc(100% - 48px), 1121px);
-    margin: 0 auto;
+    gap: 64px;
+    width: min(calc(100% - 48px), 1056px);
+    margin: 40px auto 0;
+    padding-bottom: 88px;
 
-    > .left, > .right { width: 502px; }
+    > .left, > .right { width: 496px; }
   }
 }
 
 .block3 {
-  min-height: 836px;
+  min-height: 730px;
   flex-direction: column;
 
   > .title {
-    width: min(calc(100% - 48px), 1152px);
-    margin: 82px auto 14px;
-    font-size: clamp(38px, 3.23vw, 48px);
+    width: min(calc(100% - 48px), 1056px);
+    margin: 128px auto 18px;
+    font-size: clamp(34px, 3vw, 42px);
     font-weight: 700;
-    line-height: 59px;
+    line-height: 1.2;
   }
 
   .main { display: flex; width: 100%; padding: 0; }
@@ -422,16 +440,19 @@ const code =
 
 @media (max-width: 1023px) {
   .blockTitle {
-    .horizontalAlign { justify-content: center; flex-direction: column; padding: 54px 24px; text-align: center; }
+    height: auto;
+    min-height: 0;
+
+    .horizontalAlign { justify-content: center; flex-direction: column; padding: 54px 24px 68px; text-align: center; }
     .titleLeft { width: 100%; max-width: 100%; }
-    .titleLeft .subtitle { margin-top: 70px; }
+    .titleLeft .subtitle { margin-top: 42px; }
     .titleRight {
       align-self: center;
       width: 100%;
       max-width: calc(100vw - 32px);
       height: auto;
       min-height: 0;
-      margin: 32px auto 0;
+      margin: 24px auto 0;
       overflow-x: auto;
       text-align: left;
 
@@ -440,21 +461,35 @@ const code =
   }
 }
 
+@media (max-width: 560px) {
+  .blockTitle {
+    .horizontalAlign { padding: 44px 20px 56px; }
+    .titleLeft h1 { font-size: 46px; }
+    .titleLeft h1.blue { font-size: 60px; }
+    .titleLeft .subtitle { min-height: 76px; margin-top: 34px; font-size: 18px; line-height: 1.6; }
+    .titleRight {
+      max-width: calc(100vw - 24px);
+      :deep(pre) { min-width: 390px; padding: 16px; font-size: 11px; line-height: 16px; }
+    }
+  }
+}
+
 @media (max-width: 850px) {
-  .block .no { font-size: 70px; }
+  .block0, .block2 { --section-index-top: 42px; }
+  .block .no { font-size: 58px; }
   .block0 {
     min-height: 0;
     flex-direction: column;
     gap: 0;
     padding: 0;
 
-    .left { box-sizing: border-box; width: 100%; padding: 100px 24px 10px; }
-    .right { box-sizing: border-box; width: 100%; padding: 30px 24px 64px; }
+    .left { box-sizing: border-box; width: 100%; padding: 88px 24px 8px; }
+    .right { box-sizing: border-box; width: 100%; padding: 28px 24px 64px; }
   }
   .block1 {
-    > .title { margin: 64px 24px 36px; font-size: 42px; }
+    > .title { margin: 70px 24px 32px; font-size: 36px; }
     .main { box-sizing: border-box; gap: 28px; padding: 0 20px 64px; }
-    .main .frame { width: 100%; max-width: 298px; }
+    .main .frame { width: 100%; max-width: 320px; }
     .main .frame .iconBox, .main .frame .description { width: 100%; }
   }
   .block2 .segment, .block2 .segment:first-of-type, .block2 .segment:last-of-type {
@@ -466,11 +501,12 @@ const code =
     padding: 0;
 
     > .left, > .right { box-sizing: border-box; width: 100%; padding: 60px 24px 12px; }
-    .left .title { font-size: 42px; }
+    .left .title { font-size: 36px; }
     .right.flexRow { flex-direction: column; gap: 18px; padding: 20px 24px 50px; }
     .card { width: 100%; }
   }
-  .block3 > .title { width: auto; margin: 64px 24px 24px; font-size: 42px; }
+  .block2 .segment:last-of-type { margin: 0; }
+  .block3 > .title { width: auto; margin: 70px 24px 24px; font-size: 36px; }
 }
 
 @media (min-width: 851px) and (max-width: 1120px) {

@@ -41,12 +41,12 @@
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  padding: 56px 0 36px;
+  padding: 64px var(--page-gutter) 32px;
 }
 
 .content {
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
+  max-width: var(--content-width);
   display: flex;
   flex-direction: column;
 }
@@ -54,7 +54,7 @@
 .top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 60px;
+  margin-bottom: 48px;
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -68,16 +68,17 @@
   
   .logo {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 48px;
+    font-size: 40px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   }
   
   .description {
     font-size: 16px;
-    line-height: 1.6;
+    max-width: 420px;
+    line-height: 1.65;
     color: #E8EDF5;
-    margin: 0 0 30px 0;
+    margin: 0 0 24px 0;
   }
 
   .joinBtn {
@@ -85,15 +86,15 @@
     align-items: center;
     justify-content: space-between;
     width: fit-content;
-    padding: 10px 20px;
+    padding: 9px 18px;
     border: 1.5px solid white;
     background-color: transparent;
     color: white;
     text-decoration: none;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 650;
     gap: 10px;
-    transition: all 0.3s ease;
+    transition: background-color .2s ease, color .2s ease;
     
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -109,7 +110,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 15px;
+  gap: 13px;
   
   @media (max-width: 768px) {
     align-items: flex-start;
@@ -119,7 +120,8 @@
     color: white;
     text-decoration: none;
     font-size: 16px;
-    transition: opacity 0.3s;
+    font-weight: 550;
+    transition: opacity .2s;
     
     &:hover {
       opacity: 0.8;
@@ -140,6 +142,6 @@
 }
 
 @media (max-width: 768px) {
-  .footer { padding: 48px 0 32px; }
+  .footer { padding: 48px 20px 32px; }
 }
 </style>

@@ -9,32 +9,33 @@
 </template>
 
 <style scoped lang="scss">
-$padding-desktop: 6vw;
+$padding-desktop: var(--page-gutter);
 $padding-tablet: 3vw;
 $padding-mobile: 20px;
-$content-max-width: 960px;
+$content-max-width: var(--content-width);
 
 .content {
   display: flex;
   flex-direction: column;
 
   margin: 0 auto;
+  box-sizing: border-box;
   padding-top: 20px;
   padding-left: $padding-desktop;
   padding-right: $padding-desktop;
   max-width: $content-max-width;
-  width: calc(100% - 2 * $padding-desktop);
+  width: 100%;
 
   @media (max-width: 1023px) {
     padding-left: $padding-tablet;
     padding-right: $padding-tablet;
-    width: calc(100% - 2 * $padding-tablet);
+    width: 100%;
   }
 
   @media (max-width: 767px) {
     padding-left: $padding-mobile;
     padding-right: $padding-mobile;
-    width: calc(100% - 2 * $padding-mobile);
+    width: 100%;
   }
 }
 </style>
