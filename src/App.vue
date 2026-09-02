@@ -17,30 +17,32 @@ watch(() => route.fullPath, () => {
 </script>
 <template>
   <nav class="nav">
-    <div class="left">
-      <RouterLink to="/" aria-label="返回首页">
-        <img class="logo" src="@/assets/SubIT-Normal.svg" alt="SubIT Logo"/>
-      </RouterLink>
-    </div>
-    <button class="menuButton" type="button" :aria-expanded="mobileOpen" aria-label="打开导航菜单" @click="mobileOpen = !mobileOpen">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="right" :class="{ open: mobileOpen }">
-      <RouterLink to="/join">
-        <span>加入我们</span>
-      </RouterLink>
-      <RouterLink to="/achievements">
-        <span>项目成就</span>
-      </RouterLink>
-      <RouterLink to="/support">
-        <span>提供支持</span>
-      </RouterLink>
-      <RouterLink to="/submore">
-        <span>SubMore</span>
-      </RouterLink>
-      <button class="searchButton" type="button" aria-label="搜索" @click="searchOpen = true">
-        <img src="@/assets/search.svg" alt=""/>
+    <div class="navInner">
+      <div class="left">
+        <RouterLink to="/" aria-label="返回首页">
+          <img class="logo" src="@/assets/SubIT-Normal.svg" alt="SubIT Logo"/>
+        </RouterLink>
+      </div>
+      <button class="menuButton" type="button" :aria-expanded="mobileOpen" aria-label="打开导航菜单" @click="mobileOpen = !mobileOpen">
+        <span></span><span></span><span></span>
       </button>
+      <div class="right" :class="{ open: mobileOpen }">
+        <RouterLink to="/join">
+          <span>加入我们</span>
+        </RouterLink>
+        <RouterLink to="/achievements">
+          <span>项目成就</span>
+        </RouterLink>
+        <RouterLink to="/support">
+          <span>提供支持</span>
+        </RouterLink>
+        <RouterLink to="/submore">
+          <span>SubMore</span>
+        </RouterLink>
+        <button class="searchButton" type="button" aria-label="搜索" @click="searchOpen = true">
+          <img src="@/assets/search.svg" alt=""/>
+        </button>
+      </div>
     </div>
   </nav>
   <main class="main">
@@ -54,8 +56,6 @@ $navbar-height: 64px;
 $divider-color: #E8EDF5;
 .nav {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
 
   position: fixed;
   top: 0;
@@ -63,7 +63,6 @@ $divider-color: #E8EDF5;
   z-index: 9999;
   width: 100%;
   height: $navbar-height;
-  padding: 0 var(--page-gutter);
   box-sizing: border-box;
 
   background-color: rgba(255, 255, 255, .96);
@@ -75,14 +74,23 @@ $divider-color: #E8EDF5;
 
   user-select: none;
 
-  > div {
+  .navInner {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var(--shell-width);
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 var(--page-gutter);
   }
 
   .left { margin-left: 0; }
 
   .right {
+    display: flex;
+    align-items: center;
     margin-right: 0;
     gap: 6px;
 
@@ -152,7 +160,7 @@ $divider-color: #E8EDF5;
 
 @media (max-width: 760px) {
   .nav {
-    padding: 0 14px 0 18px;
+    .navInner { padding: 0 14px 0 18px; }
 
     .right {
       position: absolute;

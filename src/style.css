@@ -3,6 +3,8 @@
 :root {
   --page-gutter: clamp(24px, 4.2vw, 56px);
   --content-width: 1120px;
+  --section-content-width: 1056px;
+  --shell-width: 1440px;
   --text-primary: #161616;
   --text-secondary: #4b5563;
   --surface-subtle: #f5f7fa;
@@ -17,6 +19,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 1600px) and (min-aspect-ratio: 2/1) {
+  :root {
+    --page-gutter: clamp(56px, 4vw, 80px);
+    --content-width: 1280px;
+    --section-content-width: 1200px;
+  }
 }
 
 html {

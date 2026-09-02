@@ -194,7 +194,7 @@ const code =
     position: absolute;
     z-index: -1;
     top: var(--section-index-top);
-    left: 0;
+    left: max(0px, calc((100% - var(--shell-width)) / 2));
     margin: 10px;
     color: rgba(156, 163, 175, .3);
     font: 400 clamp(64px, 6vw, 80px)/1 "JetBrains Mono", monospace;
@@ -279,7 +279,7 @@ const code =
   justify-content: center;
   gap: 64px;
   min-height: 604px;
-  padding: 44px max(24px, calc((100% - 1056px) / 2)) 0;
+  padding: 44px max(24px, calc((100% - var(--section-content-width)) / 2)) 0;
 
   .left {
     display: flex;
@@ -309,7 +309,7 @@ const code =
   background: #f7f9fc;
 
   > .title {
-    width: min(calc(100% - 48px), 1056px);
+    width: min(calc(100% - 48px), var(--section-content-width));
     margin: 128px auto 36px;
     font-size: clamp(34px, 3vw, 42px);
     font-weight: 700;
@@ -405,7 +405,7 @@ const code =
   .segment:first-of-type {
     box-sizing: border-box;
     gap: 72px;
-    width: min(calc(100% - 48px), 1056px);
+    width: min(calc(100% - 48px), var(--section-content-width));
     min-height: 0;
     margin: 0 auto;
     padding-top: 172px;
@@ -415,7 +415,7 @@ const code =
 
   .segment:last-of-type {
     gap: 64px;
-    width: min(calc(100% - 48px), 1056px);
+    width: min(calc(100% - 48px), var(--section-content-width));
     margin: 40px auto 0;
     padding-bottom: 88px;
 
@@ -428,7 +428,7 @@ const code =
   flex-direction: column;
 
   > .title {
-    width: min(calc(100% - 48px), 1056px);
+    width: min(calc(100% - 48px), var(--section-content-width));
     margin: 128px auto 18px;
     font-size: clamp(34px, 3vw, 42px);
     font-weight: 700;
@@ -515,6 +515,50 @@ const code =
   .block1 .main .frame .iconBox, .block1 .main .frame .description { width: 100%; }
   .block2 .segment:first-of-type { gap: 40px; }
   .block2 .segment:last-of-type { gap: 48px; }
+}
+
+@media (min-width: 1600px) and (min-aspect-ratio: 2/1) {
+  .blockTitle {
+    height: clamp(680px, calc(100svh - 64px), 760px);
+
+    .horizontalAlign { gap: clamp(96px, 7vw, 136px); }
+  }
+
+  .block0 {
+    gap: 96px;
+    min-height: 680px;
+
+    .left, .right { width: 552px; }
+  }
+
+  .block1 {
+    min-height: 700px;
+
+    .main {
+      width: min(calc(100% - 96px), var(--section-content-width));
+
+      .frame {
+        width: calc((100% - 72px) / 3);
+        max-width: none;
+      }
+    }
+  }
+
+  .block2 {
+    .segment:first-of-type {
+      gap: 96px;
+
+      > .left, > .right { width: 552px; }
+    }
+
+    .segment:last-of-type {
+      gap: 64px;
+
+      > .left, > .right { width: 568px; }
+    }
+  }
+
+  .block3 { min-height: 780px; }
 }
 
 @media (max-height: 560px) and (min-width: 1024px) {
