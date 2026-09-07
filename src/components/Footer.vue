@@ -27,7 +27,7 @@
       </div>
       <div class="divider"></div>
       <div class="bottom">
-        <span>Copyright © 2018-2025 . All rights reserved. 京ICP备2022023326号</span>
+        <span>Copyright © 2018-2025 . All rights reserved. <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">京ICP备2022023326号</a></span>
       </div>
     </div>
   </footer>
@@ -139,6 +139,15 @@
 .bottom {
   font-size: 14px;
   color: #E8EDF5;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 
 @media (max-width: 768px) {
