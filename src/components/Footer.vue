@@ -142,10 +142,16 @@
 
   a {
     color: inherit;
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
 
     &:hover {
       opacity: 0.8;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 3px;
     }
   }
 }
