@@ -24,6 +24,22 @@ export interface MemberItem {
   description: string;
 }
 
+export interface MemberEntry {
+  name: string;
+  house: string;
+}
+
+export interface MemberSession {
+  name: string;
+  members: MemberEntry[];
+}
+
+export interface MemberSection {
+  title: string;
+  collapsible?: boolean;
+  sessions: MemberSession[];
+}
+
 export interface PotItem { image: string; title: string; subtitle: string }
 export interface PhotoItem { image: string; description: string }
 export interface QuoteItem { text: string; author: string }
@@ -37,6 +53,7 @@ export interface SiteContent {
     recruitmentLink: string;
     membersTitle: string;
     members: MemberItem[];
+    memberSections: MemberSection[];
   };
   submore: {
     intro: string;
@@ -72,6 +89,105 @@ export const defaultSiteContent: SiteContent = {
       name: index === 0 ? "社长｜CPS1" : index === 1 ? "副社长｜CPS2" : `CPS${index + 1}`,
       description: "CPSCPSCPSCPS",
     })),
+    memberSections: [
+      {
+        title: "历届社员列表",
+        collapsible: true,
+        sessions: [
+          {
+            name: "2026届",
+            members: [
+              {name: "赵伯焘", house: "格物"},
+              {name: "黄若原", house: "弘毅"},
+              {name: "徐栩", house: "正心"},
+              {name: "唐月钦", house: "正心"},
+              {name: "史历新", house: "正心"},
+              {name: "李知晓", house: "格物"},
+              {name: "杜恒毅", house: "诚意"},
+              {name: "申一君", house: "正心"},
+              {name: "赵晗犀", house: "正心"},
+              {name: "张奕驰", house: "格物"},
+              {name: "王艺嘉", house: "正心"},
+              {name: "邵悦晴", house: "致知"},
+              {name: "李梓萌", house: "正心"},
+              {name: "刘春琴", house: "诚意"},
+            ],
+          },
+          {
+            name: "2025届",
+            members: [
+              {name: "孔德宸", house: "社长 | 明德"},
+              {name: "朱舜中", house: "致知"},
+              {name: "张皓然", house: "弘毅"},
+              {name: "宋易航", house: "明德"},
+              {name: "查羽洋", house: "明德"},
+              {name: "虞杰宁", house: "致知"},
+              {name: "许锦程", house: "至善"},
+              {name: "廖士诚", house: "诚意"},
+              {name: "王宣懿", house: "副社长 | 诚意"},
+              {name: "王雪滢", house: "诚意"},
+              {name: "来子恒", house: "正心"},
+            ],
+          },
+          {
+            name: "2024届",
+            members: [
+              {name: "魏子峰", house: "社长 | 致知"},
+              {name: "黄尚禹", house: "弘毅"},
+              {name: "吴建松", house: "明德"},
+              {name: "李若水", house: "副社长 | 熙敬"},
+              {name: "潘颜紫", house: "熙敬"},
+              {name: "王鹏程", house: "诚意"},
+              {name: "郑茹伊", house: "正心"},
+              {name: "马彰彤", house: "明德"},
+              {name: "杨天羽", house: "新民"},
+              {name: "吴方雨", house: "熙敬"},
+              {name: "郭鹏飞", house: "熙敬"},
+            ],
+          },
+        ],
+      },
+      {
+        title: "养老院·荣誉社员",
+        sessions: [
+          {
+            name: "2023届",
+            members: [
+              {name: "刘宇宸", house: "社长 | 致知"},
+              {name: "张景行", house: "弘毅"},
+              {name: "夏博扬", house: "弘毅"},
+              {name: "张子健", house: "副社长 | 明德"},
+              {name: "李正妍", house: "正心"},
+              {name: "李阅天", house: "格物"},
+              {name: "麻思齐", house: "弘毅"},
+            ],
+          },
+          {
+            name: "2022届",
+            members: [
+              {name: "何天阳", house: "社长 | 正心"},
+              {name: "高幸", house: "副社长 | 格物"},
+              {name: "张颜开", house: "副社长 | 致知"},
+              {name: "张文思", house: "明德"},
+              {name: "沈俊阳", house: "诚意"},
+              {name: "陈梓宁", house: "正心"},
+              {name: "姚天佾", house: "明德"},
+              {name: "刘致嘉", house: "格物"},
+            ],
+          },
+          {
+            name: "2021届",
+            members: [
+              {name: "刘语辰", house: "养老院院长 | 诚意"},
+              {name: "盛天成", house: "新民"},
+              {name: "陈叙传", house: "明德"},
+              {name: "朱文鹤", house: "格物"},
+              {name: "吴欣桐", house: "正心"},
+            ],
+          },
+        ],
+      },
+    ],
   },
   submore: {
     intro: "在 SubIT，除了常规的社团活动，我们还有各种奇妙的社团文化 ……",
