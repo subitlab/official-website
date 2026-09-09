@@ -36,6 +36,7 @@ export interface MemberSession {
 
 export interface MemberSection {
   title: string;
+  collapsible?: boolean;
   sessions: MemberSession[];
 }
 
@@ -91,6 +92,7 @@ export const defaultSiteContent: SiteContent = {
     memberSections: [
       {
         title: "历届社员列表",
+        collapsible: true,
         sessions: [
           {
             name: "2026届",
