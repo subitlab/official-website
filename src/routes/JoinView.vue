@@ -2,7 +2,7 @@
 
 import Content from "@/components/Content.vue";
 import Link from "@/components/Link.vue";
-import Member from "@/components/Member.vue";
+import MemberList from "@/components/MemberList.vue";
 import {useSiteContent} from "@/content/siteContent";
 
 const siteContent = useSiteContent();
@@ -52,15 +52,7 @@ const siteContent = useSiteContent();
       </div>
     </div>
 
-    <h2 v-if="false" class="section-title">{{ siteContent.join.membersTitle }}</h2>
-
-    <div v-if="false" class="membersContainer">
-      <Member v-for="(member, index) in siteContent.join.members"
-              :key="index"
-              :image="member.image"
-              :name="member.name"
-              :description="member.description"/>
-    </div>
+    <MemberList :sections="siteContent.join.memberSections ?? []"/>
   </Content>
 </template>
 
@@ -131,20 +123,6 @@ const siteContent = useSiteContent();
     height: auto;
     object-fit: contain;
   }
-}
-
-.section-title {
-  font-size: 22px;
-  margin: 12px 0 12px;
-}
-
-.membersContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 12px 30px;
-  justify-items: start;
-  padding-bottom: 36px;
-
 }
 
 @media (max-width: 1024px) {
