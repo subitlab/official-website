@@ -11,9 +11,11 @@ import AchievementsView from "@/routes/AchievementsView.vue";
 import SupportView from "@/routes/SupportView.vue";
 import SubMoreView from "@/routes/SubMoreView.vue";
 import ContentEditorView from "@/routes/ContentEditorView.vue";
+import AboutView from "@/routes/AboutView.vue";
 
 const routes = [
   { path: '/', component: IndexView },
+  { path: '/about', component: AboutView },
   { path: '/submore', component: SubMoreView },
   { path: '/join', component: JoinView },
   { path: '/achievements', component: AchievementsView },

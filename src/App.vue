@@ -27,6 +27,9 @@ watch(() => route.fullPath, () => {
         <span></span><span></span><span></span>
       </button>
       <div class="right" :class="{ open: mobileOpen }">
+        <RouterLink to="/about">
+          <span>关于 SubIT</span>
+        </RouterLink>
         <RouterLink to="/join">
           <span>加入我们</span>
         </RouterLink>
