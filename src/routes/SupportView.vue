@@ -16,8 +16,8 @@ import LinkButton from "@/components/LinkButton.vue";
 </template>
 
 <style scoped lang="scss">
-h1 { margin: 16px 0 12px; font-size: 32px; }
-h2 { margin: 16px 0 4px; padding: 0 16px; font-size: 18px; }
-p { margin: 0; padding: 4px 16px 12px; font-size: 16px; line-height: 1.5; }
-:deep(.linkButton) { margin: 0 16px 40px; }
+h1 { margin: 0 0 12px; font-size: 32px; }
+h2 { margin: 16px 0 4px; font-size: 18px; }
+p { margin: 0; padding: 4px 0 12px; font-size: 16px; line-height: 1.5; }
+:deep(.linkButton) { margin: 0 0 40px; }
 </style>

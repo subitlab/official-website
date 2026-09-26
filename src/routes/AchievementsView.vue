@@ -41,7 +41,7 @@ const siteContent = useSiteContent();
   justify-items: center;
 }
 
-h1 { margin: 16px 0 28px; font-size: 32px; }
+h1 { margin: 0 0 28px; font-size: 32px; }
 
 .checkAll {
   margin-top: 30px;

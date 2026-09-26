@@ -163,7 +163,7 @@ $divider-color: #E8EDF5;
 
 @media (max-width: 760px) {
   .nav {
-    .navInner { padding: 0 14px 0 18px; }
+    .navInner { padding: 0 20px; }
 
     .right {
       position: absolute;
@@ -199,6 +199,8 @@ $divider-color: #E8EDF5;
     justify-content: center;
     gap: 5px;
     width: 48px;
+    height: 48px;
+    padding: 0;
     margin-right: 0;
 
     span { width: 22px; height: 2px; margin: 0 auto; background: #0d141c; }
