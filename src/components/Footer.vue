@@ -159,4 +159,8 @@
 @media (max-width: 768px) {
   .footer { padding: 48px 20px 32px; }
 }
+
+@media (max-width: 380px) {
+  .description br { display: none; }
+}
 </style>

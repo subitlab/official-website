@@ -150,7 +150,7 @@ section {
   }
 
   .photo-card {
-    min-width: 243px;
+    min-width: 0;
     .image-wrapper {
         aspect-ratio: 1;
         overflow: hidden;

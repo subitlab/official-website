@@ -182,7 +182,7 @@ const code =
 
 <style scoped lang="scss">
 .block {
-  --section-index-top: 42px;
+  --section-index-top: 22px;
 
   position: relative;
   z-index: 0;
@@ -192,14 +192,16 @@ const code =
 
   .no {
     position: absolute;
-    z-index: -1;
+    z-index: 1;
     top: var(--section-index-top);
-    left: max(0px, calc((100% - var(--shell-width)) / 2));
-    margin: 10px;
-    color: rgba(156, 163, 175, .3);
+    left: max(24px, calc((100% - var(--section-content-width)) / 2));
+    margin: 10px 0 0;
+    color: rgba(75, 85, 99, .5);
     font: 400 clamp(64px, 6vw, 80px)/1 "JetBrains Mono", monospace;
   }
 }
+
+.block2 .no { color: rgba(203, 213, 225, .6); }
 
 .blockTitle {
   min-height: 560px;
@@ -272,20 +274,18 @@ const code =
 }
 
 .block0 {
-  --section-index-top: 86px;
-
   box-sizing: border-box;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 64px;
   min-height: 604px;
-  padding: 44px max(24px, calc((100% - var(--section-content-width)) / 2)) 0;
+  padding: 128px max(24px, calc((100% - var(--section-content-width)) / 2)) 44px;
 
   .left {
     display: flex;
     flex-direction: column;
     width: min(44vw, 492px);
-    padding: 64px 0 0;
+    padding: 0;
 
     .title { font-size: clamp(32px, 3vw, 40px); font-weight: 700; line-height: 1.25; letter-spacing: -.025em; }
     .content { margin: 18px 0 32px; color: #3d4650; font-size: clamp(17px, 1.45vw, 19px); line-height: 1.7; }
@@ -295,7 +295,7 @@ const code =
     display: flex;
     flex-direction: column;
     width: min(42vw, 500px);
-    padding: 64px 0 0;
+    padding: 0;
 
     .photo { width: 100%; border-radius: 12px; box-shadow: 0 18px 44px rgba(13,20,28,.16); }
     .note { margin-top: 12px; color: #6b7280; text-align: center; font-size: 15px; }
@@ -368,8 +368,6 @@ const code =
 }
 
 .block2 {
-  --section-index-top: 86px;
-
   min-height: 0;
   flex-direction: column;
   background: #000;
@@ -408,7 +406,7 @@ const code =
     width: min(calc(100% - 48px), var(--section-content-width));
     min-height: 0;
     margin: 0 auto;
-    padding-top: 172px;
+    padding-top: 128px;
 
     > .left, > .right { width: 492px; }
   }
@@ -464,8 +462,15 @@ const code =
 @media (max-width: 560px) {
   .blockTitle {
     .horizontalAlign { padding: 44px 20px 56px; }
-    .titleLeft h1 { font-size: 46px; }
-    .titleLeft h1.blue { font-size: 60px; }
+    .titleLeft h1 {
+      display: inline-block;
+      font-size: clamp(28px, 8.5vw, 34px);
+      line-height: 1.05;
+      white-space: nowrap;
+
+      + h1 { margin-top: 0; margin-left: .08em; }
+      &.blue { font-size: clamp(34px, 10vw, 42px); }
+    }
     .titleLeft .subtitle { min-height: 76px; margin-top: 34px; font-size: 18px; line-height: 1.6; }
     .titleRight {
       max-width: calc(100vw - 24px);
@@ -475,20 +480,21 @@ const code =
 }
 
 @media (max-width: 850px) {
-  .block0, .block2 { --section-index-top: 42px; }
+  .block { --section-index-top: -10px; }
   .block .no { font-size: 58px; }
+  .block0, .block2 { --section-index-top: 46px; }
   .block0 {
     min-height: 0;
     flex-direction: column;
     gap: 0;
     padding: 0;
 
-    .left { box-sizing: border-box; width: 100%; padding: 88px 24px 8px; }
+    .left { box-sizing: border-box; width: 100%; padding: 126px 24px 8px; }
     .right { box-sizing: border-box; width: 100%; padding: 28px 24px 64px; }
   }
   .block1 {
     > .title { margin: 70px 24px 32px; font-size: 36px; }
-    .main { box-sizing: border-box; gap: 28px; padding: 0 20px 64px; }
+    .main { box-sizing: border-box; gap: 28px; width: 100%; padding: 0 24px 64px; }
     .main .frame { width: 100%; max-width: 320px; }
     .main .frame .iconBox, .main .frame .description { width: 100%; }
   }
@@ -506,6 +512,7 @@ const code =
     .card { width: 100%; }
   }
   .block2 .segment:last-of-type { margin: 0; }
+  .block2 .segment:first-of-type > .left { padding-top: 126px; }
   .block3 > .title { width: auto; margin: 70px 24px 24px; font-size: 36px; }
 }
 
