@@ -80,6 +80,7 @@ const code =
       <span class="content">SubIT社团，是下属于学业管理中心的中心社团。立志于解决学校各类技术问题，包括Office365维护与新产品的开发。</span>
       <span class="title">技术爱好者的聚集地</span>
       <span class="content">我们立志于成为北大附中技术爱好者的聚集地。以中心社团的身份与资源，让附中每一位计算机爱好者能够得到发挥自身的空间。</span>
+      <RouterLink class="sectionLink" to="/about#s2-1">了解 SubIT 更多 <span aria-hidden="true">→</span></RouterLink>
     </div>
     <div class="right">
       <img class="photo" src="@/assets/photo.png" alt="合照"/>
@@ -145,6 +146,7 @@ const code =
         </div>
       </div>
     </div>
+    <RouterLink class="sectionLink light centered" to="/about#s2-1-5">两个事业群在做什么 <span aria-hidden="true">→</span></RouterLink>
     <div class="segment">
       <div class="left">
         <img class="photo" src="@/assets/photo.png" alt="合照"/>
@@ -162,6 +164,7 @@ const code =
     <div class="main">
       <RotatingView :items="siteContent.projects"/>
     </div>
+    <RouterLink class="sectionLink centered" to="/achievements">查看全部项目与成就 <span aria-hidden="true">→</span></RouterLink>
   </div>
 </template>
 
@@ -202,6 +205,10 @@ const code =
 }
 
 .block2 .no { color: rgba(203, 213, 225, .6); }
+
+/* block0 / block2 之前有 Separator（负 margin-bottom -52px 会盖住下一块顶部），
+   索引数字需下移，否则顶部被截断 */
+.block0, .block2 { --section-index-top: 46px; }
 
 .blockTitle {
   min-height: 560px;
@@ -279,7 +286,7 @@ const code =
   justify-content: center;
   gap: 64px;
   min-height: 604px;
-  padding: 128px max(24px, calc((100% - var(--section-content-width)) / 2)) 44px;
+  padding: 152px max(24px, calc((100% - var(--section-content-width)) / 2)) 44px;
 
   .left {
     display: flex;
@@ -406,7 +413,7 @@ const code =
     width: min(calc(100% - 48px), var(--section-content-width));
     min-height: 0;
     margin: 0 auto;
-    padding-top: 128px;
+    padding-top: 152px;
 
     > .left, > .right { width: 492px; }
   }
@@ -570,5 +577,33 @@ const code =
 
 @media (max-height: 560px) and (min-width: 1024px) {
   .blockTitle { min-height: 600px; }
+}
+</style>
+
+<style scoped lang="scss">
+.sectionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: var(--brand-blue);
+  font-size: 16px;
+  font-weight: 650;
+  text-decoration: none;
+
+  span { transition: transform .2s; }
+  &:hover span { transform: translateX(5px); }
+
+  &.light { color: color-mix(in srgb, var(--brand-blue) 30%, white); }
+
+  &.centered { align-self: center; margin: 8px auto 48px; }
+}
+
+.block3 .sectionLink { margin-bottom: 80px; }
+
+@media (max-width: 850px) {
+  .sectionLink { font-size: 15px; }
+  .centered { margin: 4px auto 36px; }
+  .block3 .sectionLink { margin-bottom: 64px; }
 }
 </style>

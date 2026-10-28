@@ -40,7 +40,7 @@ const siteContent = useSiteContent();
     </section>
 
     <section>
-      <h2>我们想说（这个标题没想好）</h2>
+      <h2>社员语录</h2>
       <div class="wordcloud-container">
         <img :src="siteContent.submore.wordcloud" alt="社团成员关键词词云" class="wordcloud" />
       </div>
