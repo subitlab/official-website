@@ -79,6 +79,20 @@ onMounted(() => {
       card.removeEventListener("mouseleave", resetTilt);
     }));
   }
+
+  const navLinks = Array.from(root.querySelectorAll<HTMLAnchorElement>(".about-subnav a"));
+  const navSections = navLinks
+    .map((link) => root.querySelector<HTMLElement>(link.getAttribute("href") ?? ""))
+    .filter((section): section is HTMLElement => section !== null);
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const active = `#${entry.target.id}`;
+      navLinks.forEach((link) => link.classList.toggle("active", link.getAttribute("href") === active));
+    });
+  }, {rootMargin: "-140px 0px -55% 0px"});
+  navSections.forEach((section) => navObserver.observe(section));
+  cleanup.push(() => navObserver.disconnect());
 });
 
 onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
@@ -88,7 +102,7 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
   <div ref="aboutRoot" class="about-page" id="about-top">
     <div class="progress" aria-hidden="true"></div>
 
-    <section class="hero">
+    <section class="hero" id="s2-1">
       <div class="container">
         <div class="hero-grid">
           <div>
@@ -102,8 +116,8 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
             </h1>
             <p class="hero-sub">SubIT 成立于 2018 年 12 月，是隶属于北大附中学业管理中心的中心社团。我们协助联系、解决全校师生在各信息化系统使用中遇到的困难与技术问题。</p>
             <div class="hero-actions">
-              <a class="button primary" href="#business">看看我们在做什么 <span aria-hidden="true">→</span></a>
-              <a class="text-link" href="#future">还有更多 <span class="arr" aria-hidden="true">→</span></a>
+              <a class="button primary" href="#s2-1-3">看看我们在做什么 <span aria-hidden="true">→</span></a>
+              <a class="text-link" href="#s2-3">还有更多 <span class="arr" aria-hidden="true">→</span></a>
             </div>
           </div>
 
@@ -127,7 +141,7 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
           </div>
         </div>
 
-        <div class="stat-strip reveal" data-stagger="90">
+        <div id="s2-1-1" class="stat-strip reveal" data-stagger="90">
           <div class="stat"><strong>2018<small>.12</small></strong><span><b>FOUNDED</b>社团成立</span></div>
           <div class="stat"><strong>数百<small>人次</small></strong><span><b>SUPPORT</b>各平台技术支持</span></div>
           <div class="stat"><strong>4<small> 大</small></strong><span><b>BUSINESS</b>核心业务在线</span></div>
@@ -138,9 +152,20 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
 
     <div class="effect-gap"><div class="container"><span class="wipe"></span></div></div>
 
-    <section class="section" id="origin">
+    <nav class="about-subnav" aria-label="页内目录">
+      <div class="subnav-inner">
+        <a href="#s2-1-1">2.1.1 基础数据</a>
+        <a href="#s2-1-2">2.1.2 历史</a>
+        <a href="#s2-1-3">2.1.3 正在做的事</a>
+        <a href="#s2-1-4">2.1.4 活动室</a>
+        <a href="#s2-1-5">2.1.5 事业群</a>
+        <a href="#s2-3">2.3 还有更多</a>
+      </div>
+    </nav>
+
+    <section class="section" id="s2-1-2">
       <div class="container">
-        <span class="section-label reveal">01 / Origin / 起源</span>
+        <span class="section-label reveal">2.1.2 / History / 历史</span>
         <h2 class="section-title reveal">一切，始于一次<span class="highlight">「大神之招募」</span></h2>
         <div class="origin-grid">
           <div class="origin-prose reveal">
@@ -159,10 +184,10 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
       </div>
     </section>
 
-    <section class="section section-subtle" id="business">
+    <section class="section section-subtle" id="s2-1-3">
       <div class="container">
         <div class="business-head">
-          <div><span class="section-label reveal">02 / What We Do / 核心业务</span><h2 class="section-title reveal">四件事，我们认真做</h2></div>
+          <div><span class="section-label reveal">2.1.3 / What We Do / 正在做的事</span><h2 class="section-title reveal">四件事，我们认真做</h2></div>
           <p class="section-desc reveal">从日常答疑到系统运营，从突发响应到课程建设，学校信息化的第一线，一直有 SubIT 的位置。</p>
         </div>
         <div class="business-grid" data-stagger="110">
@@ -174,9 +199,12 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
       </div>
     </section>
 
-    <section class="section structure" id="structure">
+    <section class="section" id="s2-1-4">
+      <div class="container"><div class="west-panel reveal"><div class="west-grid"><div><span class="section-label">2.1.4 / West Wing / 活动室</span><h2>在西楼，<br>我们有<em>两层</em>活动室。</h2><p>这是 SubIT 的据点：可以讨论新方案，可以休息片刻，也可以组团学习。门通常开着，欢迎随时来串门，哪怕只是来连个 Wi-Fi。</p></div><div class="floors" data-stagger="140"><div class="floor reveal"><strong>F1</strong><span>讨论新方案<small>BRAINSTORM &amp; BUILD</small></span></div><div class="floor reveal"><strong>F2</strong><span>休息片刻 / 组团学习<small>CHILL &amp; STUDY TOGETHER</small></span></div></div></div></div></div>
+    </section>
+    <section class="section structure" id="s2-1-5">
       <div class="container center-head">
-        <span class="section-label reveal">03 / Structure / 社团架构</span>
+        <span class="section-label reveal">2.1.5 / THG · PCG / 事业群</span>
         <h2 class="section-title reveal">两个事业群，一起把事做成</h2>
         <p class="section-desc reveal">技术支持和宣传外联共同进步。我们的社团结构十分简单，日常氛围十分欢脱。</p>
         <div class="org">
@@ -199,15 +227,10 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
         <p class="crew-hint reveal">// 结构十分简单，日常氛围十分欢脱</p>
       </div>
     </section>
-
-    <section class="section" id="west-wing">
-      <div class="container"><div class="west-panel reveal"><div class="west-grid"><div><span class="section-label">04 / West Wing / 西楼</span><h2>在西楼，<br>我们有<em>两层</em>活动室。</h2><p>这是 SubIT 的据点：可以讨论新方案，可以休息片刻，也可以组团学习。门通常开着，欢迎随时来串门，哪怕只是来连个 Wi-Fi。</p></div><div class="floors" data-stagger="140"><div class="floor reveal"><strong>F1</strong><span>讨论新方案<small>BRAINSTORM &amp; BUILD</small></span></div><div class="floor reveal"><strong>F2</strong><span>休息片刻 / 组团学习<small>CHILL &amp; STUDY TOGETHER</small></span></div></div></div></div></div>
-    </section>
-
     <div class="slogan" aria-label="社团口号"><div>快乐分锅，快乐干活！<i>■</i>快乐分锅，快乐干活！<i>■</i>快乐分锅，快乐干活！<i>■</i>快乐分锅，快乐干活！<i>■</i></div></div>
 
-    <section class="section future" id="future">
-      <div class="container"><div class="future-head"><span class="section-label reveal">05 / What's Next / 还有更多</span><h2 class="reveal">让未来，<em>无限可能。</em></h2></div><div class="future-prose"><p class="reveal">技术，对这个年轻社团而言，永远只是起点。</p><p class="reveal">三年来，我们从零建设并实施了我校的新生信息化入学教育课程培训体系，在各平台完成了数百人次的技术支持，共同参与了北大附中教育集团多个成员校的信息化建设。</p></div><blockquote class="manifesto reveal"><span>答疑解惑，说到底是一种服务，解决的是现有问题。这是起因，但无疑不是全部，甚至，不是重心。</span><br><strong>用技术引领，和一些想做事的人一起，才是。</strong></blockquote><div class="future-stats" data-stagger="90"><div class="fstat reveal"><strong>3<small> 年+</small></strong><span><b>YEARS</b>从零建设课程培训体系</span></div><div class="fstat reveal"><strong>数百<small> 人次</small></strong><span><b>PEOPLE HELPED</b>各平台技术支持</span></div><div class="fstat reveal"><strong>多<small> 所</small></strong><span><b>GROUP SCHOOLS</b>集团成员校信息化建设</span></div><div class="fstat reveal"><strong>∞</strong><span><b>POSSIBILITIES</b>资源、社员与无限可能</span></div></div><div class="future-actions reveal"><RouterLink class="button primary" to="/join">新一学年，一起奋进</RouterLink><a class="text-link light" href="#about-top">大神之招募，等你入伙 <span class="arr">→</span></a></div><p class="future-sign reveal">&gt; 这个初心，直至此刻。拥有丰富校内外资源和一届届优秀社员的 SubIT，拥有无限的可能。</p></div>
+    <section class="section future" id="s2-3">
+      <div class="container"><div class="future-head"><span class="section-label reveal">2.3 / What's Next / 还有更多</span><h2 class="reveal">让未来，<em>无限可能。</em></h2></div><div class="future-prose"><p class="reveal">技术，对这个年轻社团而言，永远只是起点。</p><p class="reveal">三年来，我们从零建设并实施了我校的新生信息化入学教育课程培训体系，在各平台完成了数百人次的技术支持，共同参与了北大附中教育集团多个成员校的信息化建设。</p></div><blockquote class="manifesto reveal"><span>答疑解惑，说到底是一种服务，解决的是现有问题。这是起因，但无疑不是全部，甚至，不是重心。</span><br><strong>用技术引领，和一些想做事的人一起，才是。</strong></blockquote><div class="future-stats" data-stagger="90"><div class="fstat reveal"><strong>3<small> 年+</small></strong><span><b>YEARS</b>从零建设课程培训体系</span></div><div class="fstat reveal"><strong>数百<small> 人次</small></strong><span><b>PEOPLE HELPED</b>各平台技术支持</span></div><div class="fstat reveal"><strong>多<small> 所</small></strong><span><b>GROUP SCHOOLS</b>集团成员校信息化建设</span></div><div class="fstat reveal"><strong>∞</strong><span><b>POSSIBILITIES</b>资源、社员与无限可能</span></div></div><div class="future-actions reveal"><RouterLink class="button primary" to="/join">新一学年，一起奋进</RouterLink><a class="text-link light" href="#s2-1">大神之招募，等你入伙 <span class="arr">→</span></a></div><p class="future-sign reveal">&gt; 这个初心，直至此刻。拥有丰富校内外资源和一届届优秀社员的 SubIT，拥有无限的可能。</p></div>
     </section>
   </div>
 </template>
@@ -245,4 +268,74 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
 @media (max-width: 1023px) { .section { padding: 84px 0; }.hero { padding: 72px 0 56px; }.hero-grid, .origin-grid, .west-grid, .future-prose { grid-template-columns: 1fr; }.hero-grid { gap: 56px; }.business-head { align-items: flex-start; flex-direction: column; }.business-head .section-desc { max-width: 640px; }.stat-strip, .future-stats { grid-template-columns: repeat(2, 1fr); }.stat { padding: 24px 0 !important; border-bottom: 1px solid rgba(20,123,209,.22); }.stat:nth-child(odd) { padding-right: 20px !important; }.stat:nth-child(even) { padding-left: 20px !important; border-right: 0; }.west-panel { padding: 56px 32px; }.future-prose { gap: 20px; } }
 @media (max-width: 760px) { .container { padding-right: 20px; padding-left: 20px; }.progress { top: 64px; }.hero { padding-top: 56px; }.hero h1 { font-size: clamp(40px, 12vw, 56px); }.hero-actions { align-items: stretch; flex-direction: column; }.hero-actions .button, .hero-actions .text-link { justify-content: center; }.hero-number { top: -30px; font-size: 170px; }.terminal-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.terminal-status { display: none; }.effect-gap { padding: 28px 0; }.business-grid, .org-branches { grid-template-columns: 1fr; }.biz-card { padding: 30px 24px 24px; }.org-line { display: none; }.crew { padding: 96px 0; }.crew-frame { margin-top: 40px; }.crew-frame > span { top: -13px; right: 2px; }.west-panel { padding: 44px 24px; }.floor { padding: 20px; }.floor > strong { min-width: 38px; font-size: 28px; }.slogan > div { padding: 20px 0; }.manifesto { padding: 28px 24px; }.future-stats { gap: 14px; }.fstat { padding: 22px 18px; }.future-actions { align-items: stretch; flex-direction: column; }.future-actions .button, .future-actions .text-link { justify-content: center; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }.reveal { opacity: 1; transform: none; } }
+</style>
+
+<style scoped lang="scss">
+.about-subnav {
+  position: sticky;
+  z-index: 20;
+  top: 64px;
+  border-bottom: 1px solid #e8edf5;
+  background: rgba(255, 255, 255, .94);
+  backdrop-filter: blur(14px);
+}
+
+.subnav-inner {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  box-sizing: border-box;
+  width: min(100%, var(--content-width));
+  height: 52px;
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.about-subnav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 11px;
+  color: #536779;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color .15s;
+
+  &::after {
+    position: absolute;
+    right: 11px;
+    bottom: 0;
+    left: 11px;
+    height: 2px;
+    border-radius: 2px;
+    content: "";
+    background: transparent;
+  }
+
+  &:hover { color: var(--brand-blue); }
+
+  &.active {
+    color: var(--brand-blue);
+
+    &::after { background: var(--brand-blue); }
+  }
+}
+
+section[id] { scroll-margin-top: 130px; }
+
+@media (max-width: 760px) {
+  .about-subnav a { padding: 0 10px; font-size: 13px; }
+}
+</style>
+
+<style scoped lang="scss">
+/* 原 `.about-page` 的 overflow:hidden 会创建滚动容器，导致内部 sticky 子导航失效 */
+.about-page { overflow: clip; }
 </style>

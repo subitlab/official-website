@@ -28,7 +28,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to) {
-    if (to.hash) return {el: to.hash, behavior: 'smooth', top: 65};
+    if (to.hash) return {el: to.hash, behavior: 'smooth', top: to.path === '/about' ? 130 : 65};
     return {top: 0};
   },
 });
