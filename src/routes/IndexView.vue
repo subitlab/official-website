@@ -83,8 +83,8 @@ const code =
       <RouterLink class="sectionLink" to="/about#s2-1">了解 SubIT 更多 <span aria-hidden="true">→</span></RouterLink>
     </div>
     <div class="right">
-      <img class="photo" src="@/assets/photo.png" alt="合照"/>
-      <span class="note">摄于 xxxx 年春</span>
+      <img class="photo" src="@/assets/photo.png" alt="SubIT 社团合影"/>
+      <span class="note">SubIT 社团合影｜一群想做事的人</span>
     </div>
   </div>
   <div id="responsibilities" class="block block1">
@@ -108,7 +108,7 @@ const code =
         <div class="description">
           <span class="descNote">Creating</span>
           <span class="descTitle">创造</span>
-          <span class="descInfo">利用手中的资源，结合成员们的奇思妙想，建设新的信息化基础设计。</span>
+          <span class="descInfo">利用手中的资源，结合成员们的奇思妙想，建设新的信息化基础设施。</span>
         </div>
       </div>
       <div class="frame rightMost">
@@ -129,7 +129,7 @@ const code =
     <div class="segment">
       <div class="left">
         <span class="title">不止于技术</span>
-        <span class="content">在 SubIT，我们不止有技术。在负责技术的技术与支持事业群之外，我们还有负责宣传与外联的平台与内容事业群。这样的架构使我们社团的未来变得更加宽广。</span>
+        <span class="content">在 SubIT，我们不止有技术。除了负责技术的技术与支持事业群，我们还有负责宣传与外联的平台与内容事业群。这样的架构使我们社团的未来变得更加宽广。</span>
       </div>
       <div class="right flexRow">
         <div class="card">
@@ -147,15 +147,17 @@ const code =
       </div>
     </div>
     <RouterLink class="sectionLink light centered" to="/about#s2-1-5">两个事业群在做什么 <span aria-hidden="true">→</span></RouterLink>
-    <div class="segment">
-      <div class="left">
-        <img class="photo" src="@/assets/photo.png" alt="合照"/>
-        <span class="note">（THG内容）描述描述描述描述</span>
-      </div>
-      <div class="right">
-        <img class="photo" src="@/assets/photo.png" alt="合照"/>
-        <span class="note">（PCG内容）描述描述描述描述</span>
-      </div>
+    <div class="workStyle">
+      <article>
+        <span class="workCaption">THG / BUILD</span>
+        <h3>把系统真正跑起来</h3>
+        <p>从 O365 权限排查、活动大屏到临场故障，写代码只是开始，稳定运行才算完成。</p>
+      </article>
+      <article>
+        <span class="workCaption">PCG / TELL</span>
+        <h3>让技术被更多人看见</h3>
+        <p>从一张海报、一次招新到屏幕上的每条内容，我们负责把技术翻译成每个人都能理解的语言。</p>
+      </article>
     </div>
   </div>
   <div id="projects" class="block block3">
@@ -428,6 +430,51 @@ const code =
   }
 }
 
+.block2 .workStyle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  width: min(calc(100% - 48px), var(--section-content-width));
+  margin: 0 auto;
+  padding-bottom: 88px;
+
+  article {
+    position: relative;
+    overflow: hidden;
+    padding: 30px 32px;
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 10px;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(41, 144, 235, .2), transparent 40%),
+      rgba(255, 255, 255, .035);
+
+    &:first-child { border-top-color: rgba(41, 144, 235, .62); }
+    &:last-child { border-top-color: rgba(212, 93, 69, .62); }
+  }
+
+  .workCaption {
+    color: #73b8f4;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+  }
+
+  h3 {
+    margin: 16px 0 10px;
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.3;
+  }
+
+  p {
+    max-width: 460px;
+    margin: 0;
+    color: rgba(255, 255, 255, .64);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+}
+
 .block3 {
   min-height: 730px;
   flex-direction: column;
@@ -520,6 +567,14 @@ const code =
   }
   .block2 .segment:last-of-type { margin: 0; }
   .block2 .segment:first-of-type > .left { padding-top: 126px; }
+  .block2 .workStyle {
+    box-sizing: border-box;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+    padding: 20px 24px 64px;
+  }
+  .block2 .workStyle article { padding: 24px 22px; }
   .block3 > .title { width: auto; margin: 70px 24px 24px; font-size: 36px; }
 }
 

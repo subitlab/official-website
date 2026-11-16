@@ -22,7 +22,8 @@ interface SearchItem {
 
 const searchIndex = computed<SearchItem[]>(() => [
   {id: "page-home", title: "首页", description: "了解 SubIT、社团职责与事业群", to: "/", keywords: "subit 首页 社团 技术爱好者"},
-  {id: "page-about", title: "关于 SubIT", description: "详细介绍、历史、正在做的事、活动室与事业群", to: "/about", keywords: "关于 介绍 起源 历史 事业群 thg pcg 活动室 西楼 架构 数据"},
+  {id: "page-about", title: "关于 SubIT", description: "详细介绍、历史、正在做的事、活动室与事业群", to: "/about", keywords: "关于 介绍 起源 历史 事业群 thg pcg 活动室 西楼 架构 数据 职责分工"},
+  {id: "page-role-split", title: "职责分工", description: "THG 与 PCG 的职责边界、协作方式与处理流程", to: "/about#s2-2", keywords: "职责分工 THG PCG 协作 工作流程 谁负责 系统运维 内容运营"},
   {id: "page-responsibilities", title: "我们的职责", description: "放送、创造与助力", to: "/#responsibilities", keywords: "职责 放送 broadcasting 创造 creating 助力 helping"},
   {id: "page-groups", title: "不止于技术", description: "技术与支持事业群、平台与内容事业群", to: "/#groups", keywords: "thg pcg 技术 支持 平台 内容 事业群"},
   {id: "page-join", title: "加入我们", description: siteContent.join.intro, to: "/join", keywords: `加入 招新 社员 语雀 ${siteContent.join.membersTitle}`},
@@ -70,6 +71,13 @@ const searchIndex = computed<SearchItem[]>(() => [
     description: item.text,
     to: "/submore",
     keywords: "SubMore 语录 成员 社团文化",
+  })),
+  ...(siteContent.submore.memberProfiles ?? []).map((item, index) => ({
+    id: `member-profile-${index}`,
+    title: item.name,
+    description: `${item.cohort} · ${item.role} · ${item.description}`,
+    to: "/submore",
+    keywords: `成员 个性介绍 社员 ${item.role}`,
   })),
 ]);
 

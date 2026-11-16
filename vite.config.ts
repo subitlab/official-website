@@ -17,10 +17,6 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: requestPath => requestPath.replace(/^\/content-api/, ""),
       },
-      "/content/": {
-        target: "http://127.0.0.1:8091",
-        changeOrigin: true,
-      },
     },
   },
   css: {
