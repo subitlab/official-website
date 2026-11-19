@@ -41,6 +41,7 @@ const visibleGroups = computed(() => groups
 <template>
   <Content>
     <h1>{{ isAll ? '所有项目与成就' : '项目与成就' }}</h1>
+    <p class="pageLead">从每天经过的西楼大屏，到登录所有社团平台的 SSubITO，再到已经归档进社团历史的小项目。这里记录 SubIT 正在维护、已经完成和曾经一起做过的事。</p>
     <div class="filters" role="group" aria-label="按状态筛选项目">
       <button v-for="item in filters"
               :key="item.key"
@@ -59,9 +60,12 @@ const visibleGroups = computed(() => groups
           <Achievement v-for="(achievement, index) in group.items"
                        :key="`${group.key}-${index}`"
                        :image="achievement.image"
+                       :image-alt="achievement.imageAlt"
+                       :monogram="achievement.monogram"
                        :title="achievement.title"
                        :description="achievement.description"
                        :href="achievement.href"
+                       :link-label="achievement.linkLabel"
                        :type="achievement.type"/>
         </div>
       </section>
@@ -77,13 +81,21 @@ const visibleGroups = computed(() => groups
 </template>
 
 <style scoped lang="scss">
-h1 { margin: 0 0 20px; font-size: 32px; }
+h1 { margin: 0 0 12px; font-size: 32px; }
+
+.pageLead {
+  max-width: 780px;
+  margin: 0 0 24px;
+  color: #53616d;
+  font-size: 15px;
+  line-height: 1.75;
+}
 
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 
 .chip {

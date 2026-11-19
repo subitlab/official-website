@@ -4,6 +4,39 @@ import {onBeforeUnmount, onMounted, ref} from "vue";
 const aboutRoot = ref<HTMLElement | null>(null);
 const cleanup: Array<() => void> = [];
 
+const responsibilityGroups = [
+  {
+    code: "THG / 01",
+    tone: "role-thg",
+    name: "技术与支持事业群",
+    english: "Technology & Help Group",
+    intro: "守住学校信息化系统的日常，也在问题发生时第一时间上场。",
+    duties: [
+      {title: "O365 与账号", detail: "日常维护账号、权限与云端协同，让基础系统稳定可用。"},
+      {title: "答疑与响应", detail: "接收全校师生的技术支持请求，定位问题并给出可执行的解决方案。"},
+      {title: "项目研发", detail: "承担社团项目的开发、测试、部署与长期维护。"},
+    ],
+  },
+  {
+    code: "PCG / 02",
+    tone: "role-pcg",
+    name: "平台与内容事业群",
+    english: "Platform & Content Group",
+    intro: "把技术工作翻译成清晰的内容，让项目被理解、被使用，也被更多人看见。",
+    duties: [
+      {title: "西楼屏幕", detail: "负责内容排期、发布与素材维护，保证信息准确、准时到达。"},
+      {title: "宣传与内容", detail: "承接招新、活动和社团表达的策划、设计与内容生产。"},
+      {title: "对外与课程", detail: "连接校内外合作，并为新生信息化课程提供策划与视觉支持。"},
+    ],
+  },
+];
+
+const handoffSteps = [
+  {title: "收集问题", detail: "从支持入口记录问题与影响范围，判断它是即时故障，还是值得长期投入的需求。"},
+  {title: "拆解与分工", detail: "THG 判断技术路径，PCG 同步沟通与内容呈现，明确负责人、交付物和时间点。"},
+  {title: "交付与复盘", detail: "发布结果、留下文档，再把可复用的经验带进课程和下一次项目。"},
+];
+
 onMounted(() => {
   const root = aboutRoot.value;
   if (!root) return;
@@ -159,6 +192,7 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
         <a href="#s2-1-3">2.1.3 正在做的事</a>
         <a href="#s2-1-4">2.1.4 活动室</a>
         <a href="#s2-1-5">2.1.5 事业群</a>
+        <a href="#s2-2">2.2 职责分工</a>
         <a href="#s2-3">2.3 还有更多</a>
       </div>
     </nav>
@@ -215,6 +249,48 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
             <article class="org-card reveal"><strong>PCG</strong><h3>平台与内容事业群</h3><small>Platform &amp; Content Group</small><p><span>西楼屏幕运营</span><span>宣传与内容</span><span>对外联系</span><span>课程策划支持</span></p></article>
           </div>
           <p class="org-note reveal">技术支持 <b>×</b> 宣传外联，共同进步。结构简单，氛围欢脱。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section role-split" id="s2-2">
+      <div class="container">
+        <div class="role-heading">
+          <div>
+            <span class="section-label reveal">2.2 / Responsibilities / 职责分工</span>
+            <h2 class="section-title reveal">不是“谁都能做”，<br>而是<em>每件事都有人接</em>。</h2>
+          </div>
+          <p class="section-desc reveal">技术、内容与运营不是三条平行线。THG 和 PCG 各自守住专业边界，也共同对最终结果负责。</p>
+        </div>
+
+        <div class="role-grid" data-stagger="120">
+          <article v-for="group in responsibilityGroups" :key="group.code" :class="['role-card', 'reveal', group.tone]">
+            <div class="role-card-head">
+              <span>{{ group.code }}</span>
+              <small>{{ group.english }}</small>
+            </div>
+            <h3>{{ group.name }}</h3>
+            <p class="role-intro">{{ group.intro }}</p>
+            <div class="role-duties">
+              <div v-for="duty in group.duties" :key="duty.title" class="role-duty">
+                <b>{{ duty.title }}</b>
+                <span>{{ duty.detail }}</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="handoff reveal">
+          <div class="handoff-head">
+            <span class="section-label">HOW WE WORK / 协作方式</span>
+            <h3>一件事，从被看见到被解决。</h3>
+          </div>
+          <ol class="handoff-steps">
+            <li v-for="(step, index) in handoffSteps" :key="step.title">
+              <span>0{{ index + 1 }}</span>
+              <div><b>{{ step.title }}</b><p>{{ step.detail }}</p></div>
+            </li>
+          </ol>
         </div>
       </div>
     </section>
@@ -338,4 +414,209 @@ section[id] { scroll-margin-top: 130px; }
 <style scoped lang="scss">
 /* 原 `.about-page` 的 overflow:hidden 会创建滚动容器，导致内部 sticky 子导航失效 */
 .about-page { overflow: clip; }
+</style>
+
+<style scoped lang="scss">
+.role-split {
+  border-top: 1px solid rgba(20, 123, 209, .16);
+  background: linear-gradient(180deg, white 0%, var(--surface-subtle) 100%);
+
+  .section-title {
+    margin-bottom: 0;
+    line-height: 1.24;
+
+    em {
+      color: var(--brand-blue);
+      font-style: normal;
+      white-space: nowrap;
+    }
+  }
+
+  .section-desc { margin: 0 0 6px; }
+}
+
+.role-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+  gap: 72px;
+  align-items: end;
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.role-card {
+  --role-accent: var(--brand-blue);
+
+  position: relative;
+  overflow: hidden;
+  padding: 34px 34px 10px;
+  border: 1px solid rgba(20, 123, 209, .2);
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 1px 2px rgba(13, 20, 28, .05);
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    content: "";
+    background: var(--role-accent);
+  }
+
+  &:hover {
+    border-color: var(--role-accent);
+    box-shadow: 0 16px 38px -18px rgba(13, 20, 28, .28);
+    transform: translateY(-4px);
+  }
+
+  &.role-pcg { --role-accent: #d45d45; }
+
+  h3 {
+    margin: 22px 0 0;
+    font-size: clamp(24px, 2.4vw, 30px);
+    line-height: 1.3;
+  }
+}
+
+.role-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  span {
+    color: var(--role-accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .06em;
+  }
+
+  small {
+    color: var(--text-secondary);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: .04em;
+    text-align: right;
+  }
+}
+
+.role-intro {
+  min-height: 54px;
+  margin: 14px 0 28px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.role-duties { border-top: 1px solid rgba(20, 123, 209, .14); }
+
+.role-duty {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(20, 123, 209, .12);
+
+  b {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 650;
+  }
+
+  span {
+    color: var(--text-secondary);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+}
+
+.handoff {
+  margin-top: 32px;
+  padding: 40px 42px;
+  border-radius: 10px;
+  background: #161616;
+  color: white;
+}
+
+.handoff-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 32px;
+
+  .section-label { color: rgba(255, 255, 255, .52); }
+  .section-label::before { background: var(--brand-blue); }
+
+  h3 {
+    margin: 0 0 4px;
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.3;
+  }
+}
+
+.handoff-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 14px;
+    padding: 0 28px;
+    border-left: 1px solid rgba(255, 255, 255, .16);
+
+    &:first-child { padding-left: 0; border-left: 0; }
+    &:last-child { padding-right: 0; }
+  }
+
+  li > span {
+    color: var(--brand-blue);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  b { display: block; font-size: 16px; }
+  p { margin: 8px 0 0; color: rgba(255, 255, 255, .6); font-size: 14px; line-height: 1.75; }
+}
+
+@media (max-width: 1023px) {
+  .role-heading { grid-template-columns: 1fr; gap: 22px; }
+  .role-heading .section-desc { max-width: 640px; }
+  .role-grid { grid-template-columns: 1fr; }
+  .role-intro { min-height: 0; }
+  .handoff-steps { grid-template-columns: 1fr; gap: 24px; }
+
+  .handoff-steps li,
+  .handoff-steps li:first-child,
+  .handoff-steps li:last-child {
+    padding: 0 0 0 20px;
+    border-left: 1px solid rgba(255, 255, 255, .16);
+  }
+}
+
+@media (max-width: 760px) {
+  .role-split { padding-top: 84px; padding-bottom: 84px; }
+  .role-grid { margin-top: 36px; }
+  .role-card { padding: 28px 24px 8px; }
+  .role-card-head { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .role-card-head small { text-align: left; }
+  .role-duty { grid-template-columns: 1fr; gap: 6px; padding: 17px 0; }
+  .handoff { padding: 30px 24px; }
+  .handoff-head { align-items: flex-start; flex-direction: column; gap: 14px; }
+  .role-split .section-title em { white-space: normal; }
+}
 </style>
