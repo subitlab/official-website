@@ -14,7 +14,7 @@ const type = ref<HTMLDivElement | null>(null);
 let typed: Typed | undefined;
 onMounted(() => {
   typed = new Typed(type.value, {
-    strings: ['这里是北大附中的 <span class="textGradient1">{技术爱好者}</span> 聚集地, <br/>让每一个爱好者都能充分 <span class="textGradient2">&lt;&#8288;施展拳脚&#8288;&gt;</span>.'],
+    strings: ['北大附中的 <span class="textGradient1">{技术爱好者}</span> 聚集地。<br/>一起用技术解决校园里的 <span class="textGradient2">&lt;&#8288;实际问题&#8288;&gt;</span>。'],
     typeSpeed: 50,
     fadeOut: true,
     fadeOutDelay: 3000,
@@ -77,14 +77,14 @@ const code =
     <span class="no">0x00</span>
     <div class="left">
       <span class="title">北大附中的中心社团</span>
-      <span class="content">SubIT社团，是下属于学业管理中心的中心社团。立志于解决学校各类技术问题，包括Office365维护与新产品的开发。</span>
+      <span class="content">SubIT 是北大附中科学教育中心的中心社团。我们为师生提供 Office 365 等校园信息化系统的使用支持，也开发校园所需的软件和服务。</span>
       <span class="title">技术爱好者的聚集地</span>
-      <span class="content">我们立志于成为北大附中技术爱好者的聚集地。以中心社团的身份与资源，让附中每一位计算机爱好者能够得到发挥自身的空间。</span>
+      <span class="content">在这里，对编程、设计和内容运营感兴趣的同学可以一起做项目，把自己的想法变成师生用得上的工具。</span>
       <RouterLink class="sectionLink" to="/about#s2-1">了解 SubIT 更多 <span aria-hidden="true">→</span></RouterLink>
     </div>
     <div class="right">
-      <img class="photo" src="@/assets/photo.png" alt="SubIT 社团合影"/>
-      <span class="note">SubIT 社团合影｜一群想做事的人</span>
+      <img class="photo" src="/legacy/group-2025.jpg" alt="SubIT 2025 届社团合影"/>
+      <span class="note">SubIT 2025 届社团合影</span>
     </div>
   </div>
   <div id="responsibilities" class="block block1">

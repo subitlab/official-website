@@ -10,11 +10,11 @@ const responsibilityGroups = [
     tone: "role-thg",
     name: "技术与支持事业群",
     english: "Technology & Help Group",
-    intro: "守住学校信息化系统的日常，也在问题发生时第一时间上场。",
+    intro: "为师生提供信息化支持，负责社团项目的技术研发与维护。",
     duties: [
-      {title: "O365 与账号", detail: "日常维护账号、权限与云端协同，让基础系统稳定可用。"},
-      {title: "答疑与响应", detail: "接收全校师生的技术支持请求，定位问题并给出可执行的解决方案。"},
-      {title: "项目研发", detail: "承担社团项目的开发、测试、部署与长期维护。"},
+      {title: "前端与后端开发", detail: "前端负责师生使用的网站界面，后端负责账户、数据和服务的运行逻辑。"},
+      {title: "3D 建模与 AI 开发", detail: "用 Blender 等工具制作三维模型，并探索大语言模型在校园问答等场景的应用。"},
+      {title: "运维与技术支持", detail: "协助维护 Office 365 等校园系统，响应师生遇到的技术问题。"},
     ],
   },
   {
@@ -22,11 +22,11 @@ const responsibilityGroups = [
     tone: "role-pcg",
     name: "平台与内容事业群",
     english: "Platform & Content Group",
-    intro: "把技术工作翻译成清晰的内容，让项目被理解、被使用，也被更多人看见。",
+    intro: "负责项目需求与设计、平台运营，以及招新和校内外活动。",
     duties: [
-      {title: "西楼屏幕", detail: "负责内容排期、发布与素材维护，保证信息准确、准时到达。"},
-      {title: "宣传与内容", detail: "承接招新、活动和社团表达的策划、设计与内容生产。"},
-      {title: "对外与课程", detail: "连接校内外合作，并为新生信息化课程提供策划与视觉支持。"},
+      {title: "需求与界面设计", detail: "整理师生需求，编写项目文档，并用 Figma 等工具设计网站界面，与 THG 协作交付。"},
+      {title: "平台运营与宣传", detail: "运营公众号和西楼屏幕，制作招新及活动宣传海报。"},
+      {title: "活动与信息化入教", detail: "策划校内外活动，为新生提供校园信息化系统使用培训。"},
     ],
   },
 ];
@@ -141,13 +141,13 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
           <div>
             <div class="hero-badges">
               <span class="badge badge-primary badge-mono">ABOUT US / VOL.21</span>
-              <span class="badge badge-neutral">学业管理中心 / 中心社团</span>
+              <span class="badge badge-neutral">科学教育中心 / 中心社团</span>
             </div>
             <h1>
               <span class="line"><span>用技术引领，</span></span>
               <span class="line"><span>和<em>想做事的人</em>一起。</span></span>
             </h1>
-            <p class="hero-sub">SubIT 成立于 2018 年 12 月，是隶属于北大附中学业管理中心的中心社团。我们协助联系、解决全校师生在各信息化系统使用中遇到的困难与技术问题。</p>
+            <p class="hero-sub">SubIT 成立于 2018 年 12 月，现为北大附中科学教育中心的中心社团。我们帮助全校师生解决校园信息化系统的使用问题，也开发校园所需的软件与服务。</p>
             <div class="hero-actions">
               <a class="button primary" href="#s2-1-3">看看我们在做什么 <span aria-hidden="true">→</span></a>
               <a class="text-link" href="#s2-3">还有更多 <span class="arr" aria-hidden="true">→</span></a>
@@ -205,13 +205,13 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
           <div class="origin-prose reveal">
             <p><strong>2018 年 12 月</strong>，在旧博雅学院与孙玉磊老师的引导下，SubIT 正式创建。</p>
             <p>当时，Office 365 在我校全面铺开。系统复杂，又持续更新，使用疑难层出不穷，要让<strong>学生做老师</strong>，来解决这个最直接的问题。</p>
-            <p>于是，以帮助全校师生解决 O365 使用中遇到的困扰为初心，便有了第一次「大神之招募」。答疑的起点，是一间办公室里举起来的一只手；后来，举起来的手越来越多。</p>
+            <p>为了帮助师生解决 Office 365 的使用问题，社团发起了第一次「大神之招募」。此后，成员逐渐把答疑积累的经验带进新生课程，也开始为校园开发服务。</p>
             <blockquote>「以帮助全校师生解决 O365 使用困扰为初心。」<small>这句话，写在我们最开始的地方</small></blockquote>
           </div>
           <ol class="timeline" data-stagger="130">
-            <li class="hot reveal"><b>2018.12</b><h3>SubIT 成立</h3><p>由旧博雅学院与孙玉磊老师引导创建，挂靠北大附中学业管理中心。</p></li>
+            <li class="hot reveal"><b>2018.12</b><h3>SubIT 成立</h3><p>由旧博雅学院与孙玉磊老师引导创建，最初为师生提供 Office 365 使用支持。</p></li>
             <li class="reveal"><b>O365 时代</b><h3>「大神」驻场答疑</h3><p>Office 365 全校铺开，学生大神冲在使用支持第一线。</p></li>
-            <li class="reveal"><b>后来</b><h3>从答疑，走向更多现场</h3><p>宣传屏幕运营、新生入学教育、教育集团成员校信息化建设，业务越走越宽。</p></li>
+            <li class="reveal"><b>后来</b><h3>从答疑走向校园项目</h3><p>社团陆续参与宣传屏幕运营、新生入学教育和集团成员校的信息化建设，也曾受邀参观微软在中国的技术研究机构并展示北大附中的教育信息化实践。</p></li>
             <li class="reveal"><b>VOL.21 / 此刻</b><h3>新一学年，一起奋进</h3><p>一届届优秀社员接力，技术只是起点，初心直至此刻。</p></li>
           </ol>
         </div>
@@ -242,7 +242,7 @@ onBeforeUnmount(() => cleanup.splice(0).forEach((dispose) => dispose()));
         <h2 class="section-title reveal">两个事业群，一起把事做成</h2>
         <p class="section-desc reveal">技术支持和宣传外联共同进步。我们的社团结构十分简单，日常氛围十分欢脱。</p>
         <div class="org">
-          <div class="org-root reveal">SubIT <i>/</i> 中心社团<small>北大附中学业管理中心</small></div>
+          <div class="org-root reveal">SubIT <i>/</i> 中心社团<small>北大附中科学教育中心</small></div>
           <div class="org-line"></div>
           <div class="org-branches" data-stagger="160">
             <article class="org-card reveal"><strong>THG</strong><h3>技术与支持事业群</h3><small>Technology &amp; Help Group</small><p><span>O365 系统运维</span><span>信息化答疑支持</span><span>突发事件响应</span><span>技术方案攻坚</span></p></article>

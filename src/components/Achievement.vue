@@ -28,7 +28,7 @@ defineProps<{
       <a v-if="href" class="link" :href="href" target="_blank" rel="noopener noreferrer">
         {{ linkLabel ?? '了解项目详情 >' }}
       </a>
-      <span v-else class="archive">历史项目档案</span>
+      <span v-else class="archive">暂无公开链接</span>
     </div>
   </article>
 </template>
